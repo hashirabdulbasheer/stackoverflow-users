@@ -1,8 +1,10 @@
 import 'package:http/http.dart' as http;
+import 'package:stackoverflow_users/core/enums/exception_enum.dart';
 
 import '../../../core/base_classes/base_network_datasource.dart';
 import '../../../core/configs/network_config.dart';
 import '../../../core/entities/SOResponse.dart';
+import '../../../core/errors/exceptions.dart';
 
 abstract class SOUsersNetworkDataSource extends SOBaseNetworkDataSource {
   /// Fetch users
@@ -42,7 +44,10 @@ class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
       return SOResponse(isSuccessful: true, body: response.body);
     } else {
       // Error
-      return const SOResponse(isSuccessful: false, body: null);
+      throw ServerException(
+          type: SOExceptionType.network,
+          message:
+              "${SOExceptionType.network.rawString()}: ${response.statusCode}");
     }
   }
 }

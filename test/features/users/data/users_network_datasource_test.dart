@@ -4,6 +4,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:stackoverflow_users/core/configs/network_config.dart';
 import 'package:stackoverflow_users/core/entities/SOResponse.dart';
+import 'package:stackoverflow_users/core/enums/exception_enum.dart';
+import 'package:stackoverflow_users/core/errors/exceptions.dart';
 import 'package:stackoverflow_users/features/users/data/users_network_datasource.dart';
 
 import 'users_network_datasource_test.mocks.dart';
@@ -41,15 +43,20 @@ void main() {
 
   /// Testcases
 
-  test('LoadUsers should return error response in case of network errors',
+  test('LoadUsers should throw Server exception in case of network errors',
       () async {
     final client = makeUsersClient(response: http.Response(errorJson, 403));
     SOUsersNetworkDataSource sut = makeSut(client: client);
 
-    SOResponse response = await sut.fetchUsers(page: 1);
+    SOResponse? response;
+    try {
+      response = await sut.fetchUsers(page: 1);
+    } catch (error) {
+      expect(error is ServerException, true);
+      expect((error as ServerException).type, SOExceptionType.network);
+    }
 
-    expect(response.isSuccessful, false);
-    expect(response.body, null);
+    expect(response == null, true);
   });
 
   test(
