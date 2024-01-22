@@ -65,10 +65,17 @@ void main() {
     final client = makeUsersClient(response: http.Response("body", 200));
     SOUsersNetworkDataSource sut = makeSut(client: client);
 
-    SOResponse response = await sut.fetchUsers(page: 1);
+    SOResponse? response;
+    Exception? exception;
+    try {
+      response = await sut.fetchUsers(page: 1);
+    } on Exception catch (error) {
+      exception = error;
+    }
 
-    expect(response.isSuccessful, true);
-    expect(response.body, "body");
+    expect(exception == null, true);
+    expect(response?.isSuccessful, true);
+    expect(response?.body, "body");
   });
 
   test(
@@ -77,9 +84,16 @@ void main() {
     final client = makeUsersClient(response: http.Response("body", 201));
     SOUsersNetworkDataSource sut = makeSut(client: client);
 
-    SOResponse response = await sut.fetchUsers(page: 1);
+    SOResponse? response;
+    Exception? exception;
+    try {
+      response = await sut.fetchUsers(page: 1);
+    } on Exception catch (error) {
+      exception = error;
+    }
 
-    expect(response.isSuccessful, true);
-    expect(response.body, "body");
+    expect(exception == null, true);
+    expect(response?.isSuccessful, true);
+    expect(response?.body, "body");
   });
 }
