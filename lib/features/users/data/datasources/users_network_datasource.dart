@@ -8,7 +8,7 @@ import '../../../../core/entities/exceptions.dart';
 
 abstract class SOFUsersNetworkDataSource extends SOFBaseNetworkDataSource {
   /// Fetch users
-  Future<SOFResponse> fetchUsers({int? page});
+  Future<SOFResponse> fetchUsers({required int page});
 }
 
 class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
@@ -22,7 +22,7 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
   ///  - Returns error status code if error
   ///
   @override
-  Future<SOFResponse> fetchUsers({int? page = 1}) async {
+  Future<SOFResponse> fetchUsers({required int page}) async {
     Map<String, String> queryParameters = {};
     queryParameters[r'page'] = page.toString();
     queryParameters[r'pagesize'] = SOFNetworkConfig.pageSize.toString();
