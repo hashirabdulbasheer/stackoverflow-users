@@ -37,6 +37,7 @@ dependencies:
   http: ^1.1.0
   equatable: ^2.0.5
   easy_localization: ^3.0.3
+  either_dart: ^1.0.0
 
 dev_dependencies:
   flutter_test:
