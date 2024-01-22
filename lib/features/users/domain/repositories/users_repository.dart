@@ -5,5 +5,5 @@ import '../../../../core/models/failures.dart';
 import '../entities/user.dart';
 
 abstract class SOFUsersRepository extends SOFBaseRepository {
-  Future<Either<Failure, List<SOFUser>>> fetchUsers(int? page);
+  Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page});
 }

@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:either_dart/either.dart';
+import 'package:stackoverflow_users/core/entities/exceptions.dart';
 
 import '../../../../core/entities/sof_response.dart';
 import '../../../../core/models/failures.dart';
@@ -15,16 +19,32 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   SOFUsersRepositoryImpl({required this.networkDataSource});
 
   @override
-  Future<Either<Failure, List<SOFUser>>> fetchUsers(int? page) async {
+  Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page}) async {
     try {
       SOFResponse response = await networkDataSource.fetchUsers(page: page);
-      if(response.isSuccessful) {
+      if (response.isSuccessful && response.body?.isNotEmpty == true) {
         // parse response to domain model
-        return Right(List<SOFUser>.empty());
+        return Right(_mapUsersResponse(response.body ?? ""));
       }
-    } catch(error) {
+    } on ServerException catch (error) {
       return Left(getFailure(error));
-    }
+    } catch (_) {}
     return Left(getDefaultFailure());
+  }
+
+  /// Mappers
+
+  List<SOFUser> _mapUsersResponse(String response) {
+    var usersList = jsonDecode(response)['items'] as List;
+    if (usersList.isNotEmpty) {
+      return usersList
+          .map((e) => SOFUser(
+              name: e["display_name"],
+              avatar: Uri.parse(e["profile_image"]),
+              location: e["location"] ?? "error.location_unavailable".tr(),
+              age: e["age"]))
+          .toList();
+    }
+    return [];
   }
 }
