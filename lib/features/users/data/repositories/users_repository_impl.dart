@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:either_dart/either.dart';
-import 'package:stackoverflow_users/core/entities/exceptions.dart';
 
+import '../../../../core/entities/exceptions.dart';
 import '../../../../core/entities/sof_response.dart';
 import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
