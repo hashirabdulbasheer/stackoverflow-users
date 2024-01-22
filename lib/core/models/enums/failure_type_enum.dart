@@ -1,14 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum SOFailureType { general, network }
 
 extension ParseToString on SOFailureType {
   String rawString() {
     switch (this) {
       case SOFailureType.general:
-        return "General Failure";
+        return "failure.general".tr();
       case SOFailureType.network:
-        return "Network Failure";
+        return "failure.network".tr();
       default:
-        return "Failure";
+        return "failure.default".tr();
     }
   }
 }

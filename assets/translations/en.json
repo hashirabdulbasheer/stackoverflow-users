@@ -1,4 +1,11 @@
 
 {
-
+  "exception" : {
+    "network": "Network Exception"
+  },
+  "failure" : {
+    "network": "Network Failure",
+    "general": "General Failure",
+    "default": "Failure"
+  }
 }
