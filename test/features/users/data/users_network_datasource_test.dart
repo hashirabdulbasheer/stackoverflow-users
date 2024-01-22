@@ -14,7 +14,6 @@ import 'users_network_datasource_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
-
   /// Utils
   String errorJson =
       '{"error_id": 403, "error_message": "someError", "error_name": "network_error"}';
@@ -52,5 +51,17 @@ void main() {
     expect(response.isSuccessful, false);
     expect(response.statusCode, 403);
     expect(response.body, null);
+  });
+
+  test('LoadUsers should return success response in case api returns status code 200',
+      () async {
+    final client = makeUsersClient(response: http.Response("body", 200));
+    SOUsersNetworkDataSource sut = makeSut(client: client);
+
+    SOResponse response = await sut.fetchUsers(page: 1);
+
+    expect(response.isSuccessful, true);
+    expect(response.statusCode, 200);
+    expect(response.body, "body");
   });
 }
