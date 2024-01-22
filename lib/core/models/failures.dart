@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../entities/enums/exception_type_enum.dart';
+import 'enums/failure_type_enum.dart';
 
 
 ///
@@ -19,7 +19,7 @@ class GeneralFailure extends Failure with EquatableMixin {
 }
 
 class ServerFailure extends GeneralFailure {
-  final SOExceptionType type;
+  final SOFailureType type;
 
   ServerFailure({required this.type, message}) : super(message: message);
 
