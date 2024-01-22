@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../enums/error_type_enum.dart';
+import '../entities/enums/exception_type_enum.dart';
+
 
 ///
 /// Errors in domain layer
