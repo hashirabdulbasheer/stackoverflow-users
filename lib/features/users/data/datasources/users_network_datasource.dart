@@ -1,10 +1,10 @@
 import 'package:http/http.dart' as http;
 import 'package:stackoverflow_users/core/enums/exception_enum.dart';
 
-import '../../../core/base_classes/base_network_datasource.dart';
-import '../../../core/configs/network_config.dart';
-import '../../../core/entities/SOResponse.dart';
-import '../../../core/errors/exceptions.dart';
+import '../../../../core/base_classes/base_network_datasource.dart';
+import '../../../../core/configs/network_config.dart';
+import '../../../../core/entities/SOResponse.dart';
+import '../../../../core/errors/exceptions.dart';
 
 abstract class SOUsersNetworkDataSource extends SOBaseNetworkDataSource {
   /// Fetch users
