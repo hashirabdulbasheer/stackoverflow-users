@@ -53,7 +53,8 @@ void main() {
     expect(response.body, null);
   });
 
-  test('LoadUsers should return success response in case api returns status code 200',
+  test(
+      'LoadUsers should return success response in case api returns status code 200',
       () async {
     final client = makeUsersClient(response: http.Response("body", 200));
     SOUsersNetworkDataSource sut = makeSut(client: client);
@@ -62,6 +63,19 @@ void main() {
 
     expect(response.isSuccessful, true);
     expect(response.statusCode, 200);
+    expect(response.body, "body");
+  });
+
+  test(
+      'LoadUsers should return success response in case api returns status code 201',
+      () async {
+    final client = makeUsersClient(response: http.Response("body", 201));
+    SOUsersNetworkDataSource sut = makeSut(client: client);
+
+    SOResponse response = await sut.fetchUsers(page: 1);
+
+    expect(response.isSuccessful, true);
+    expect(response.statusCode, 201);
     expect(response.body, "body");
   });
 }

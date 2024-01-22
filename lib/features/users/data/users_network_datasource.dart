@@ -34,7 +34,7 @@ class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
     });
 
     http.Response response = await client.get(finalUrl, headers: headersToPass);
-    print(response.body);
+
     // Responses
     if (response.statusCode == 201 || response.statusCode == 200) {
       return SOResponse(
