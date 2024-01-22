@@ -2,9 +2,9 @@ import 'package:http/http.dart' as http;
 
 import '../../../../core/base_classes/base_network_datasource.dart';
 import '../../../../core/configs/network_config.dart';
+import '../../../../core/entities/enums/exception_type_enum.dart';
 import '../../../../core/entities/so_response.dart';
 import '../../../../core/entities/exceptions.dart';
-import '../../../../core/enums/exception_type_enum.dart';
 
 abstract class SOUsersNetworkDataSource extends SOBaseNetworkDataSource {
   /// Fetch users

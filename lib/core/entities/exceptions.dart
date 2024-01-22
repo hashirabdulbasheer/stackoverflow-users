@@ -1,4 +1,5 @@
-import '../enums/exception_type_enum.dart';
+import 'enums/exception_type_enum.dart';
+
 ///
 /// Errors in data source layer
 ///
