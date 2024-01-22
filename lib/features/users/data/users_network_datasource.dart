@@ -11,6 +11,7 @@ abstract class SOUsersNetworkDataSource extends SOBaseNetworkDataSource {
 
 class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
   final http.Client client;
+
   SOUsersNetworkDataSourceImpl({required this.client});
 
   ///
@@ -25,7 +26,8 @@ class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
     queryParameters[r'pagesize'] = SONetworkConfig.pageSize.toString();
     queryParameters[r'site'] = "stackoverflow";
 
-    var finalUrl = Uri.https(SONetworkConfig.usersBaseUrl, "/${SONetworkConfig.apiVersion}/users", queryParameters);
+    var finalUrl = Uri.https(SONetworkConfig.usersBaseUrl,
+        "/${SONetworkConfig.apiVersion}/users", queryParameters);
 
     final headersToPass = <String, String>{};
     headersToPass.addAll(<String, String>{
@@ -37,14 +39,10 @@ class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
 
     // Responses
     if (response.statusCode == 201 || response.statusCode == 200) {
-      return SOResponse(
-          isSuccessful: true,
-          statusCode: response.statusCode,
-          body: response.body);
+      return SOResponse(isSuccessful: true, body: response.body);
     } else {
       // Error
-      return SOResponse(
-          isSuccessful: false, statusCode: response.statusCode, body: null);
+      return const SOResponse(isSuccessful: false, body: null);
     }
   }
 }

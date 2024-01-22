@@ -49,7 +49,6 @@ void main() {
     SOResponse response = await sut.fetchUsers(page: 1);
 
     expect(response.isSuccessful, false);
-    expect(response.statusCode, 403);
     expect(response.body, null);
   });
 
@@ -62,7 +61,6 @@ void main() {
     SOResponse response = await sut.fetchUsers(page: 1);
 
     expect(response.isSuccessful, true);
-    expect(response.statusCode, 200);
     expect(response.body, "body");
   });
 
@@ -75,7 +73,6 @@ void main() {
     SOResponse response = await sut.fetchUsers(page: 1);
 
     expect(response.isSuccessful, true);
-    expect(response.statusCode, 201);
     expect(response.body, "body");
   });
 }
