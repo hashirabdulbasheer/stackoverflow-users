@@ -39,9 +39,11 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
     if (usersList.isNotEmpty) {
       return usersList
           .map((e) => SOFUser(
+              id: e["user_id"],
               name: e["display_name"],
               avatar: Uri.parse(e["profile_image"]),
               location: e["location"] ?? "error.location_unavailable".tr(),
+              reputation: e["reputation"],
               age: e["age"]))
           .toList();
     }
