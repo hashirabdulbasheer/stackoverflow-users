@@ -9,10 +9,10 @@ import '../../features/users/domain/usecases/fetch_users_usecase.dart';
 final sl = GetIt.instance;
 
 class SOFDiContainer {
-  static Future<void> init() async {
+  static Future<void> init({required http.Client networkClient}) async {
     /// network sources
     sl.registerFactory<SOFUsersNetworkDataSource>(
-        () => SOFUsersNetworkDataSourceImpl(client: http.Client()));
+        () => SOFUsersNetworkDataSourceImpl(client: networkClient));
 
     /// repositories
     sl.registerFactory<SOFUsersRepository>(
