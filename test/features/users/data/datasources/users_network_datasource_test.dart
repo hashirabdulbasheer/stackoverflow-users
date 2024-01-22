@@ -43,7 +43,7 @@ void main() {
 
   /// Testcases
 
-  test('LoadUsers should throw Server exception in case of network errors',
+  test('FetchUsers should throw Server exception in case of network errors',
       () async {
     final client = makeUsersClient(response: http.Response(errorJson, 403));
     SOUsersNetworkDataSource sut = makeSut(client: client);
@@ -60,7 +60,7 @@ void main() {
   });
 
   test(
-      'LoadUsers should return success response in case api returns status code 200',
+      'FetchUsers should return success response in case api returns status code 200',
       () async {
     final client = makeUsersClient(response: http.Response("body", 200));
     SOUsersNetworkDataSource sut = makeSut(client: client);
@@ -79,7 +79,7 @@ void main() {
   });
 
   test(
-      'LoadUsers should return success response in case api returns status code 201',
+      'FetchUsers should return success response in case api returns status code 201',
       () async {
     final client = makeUsersClient(response: http.Response("body", 201));
     SOUsersNetworkDataSource sut = makeSut(client: client);
