@@ -2,4 +2,4 @@
 /// Base class for network layer
 ///
 
-abstract class SOBaseNetworkDataSource {}
+abstract class SOFBaseNetworkDataSource {}

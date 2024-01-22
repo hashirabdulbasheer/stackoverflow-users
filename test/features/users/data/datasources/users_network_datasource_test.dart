@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:stackoverflow_users/core/configs/network_config.dart';
 import 'package:stackoverflow_users/core/entities/enums/exception_type_enum.dart';
-import 'package:stackoverflow_users/core/entities/so_response.dart';
+import 'package:stackoverflow_users/core/entities/sof_response.dart';
 import 'package:stackoverflow_users/core/entities/exceptions.dart';
 import 'package:stackoverflow_users/features/users/data/datasources/users_network_datasource.dart';
 
@@ -20,8 +20,8 @@ void main() {
   String errorJson =
       '{"error_id": 403, "error_message": "someError", "error_name": "network_error"}';
 
-  SOUsersNetworkDataSource makeSut({required http.Client client}) {
-    return SOUsersNetworkDataSourceImpl(client: client);
+  SOFUsersNetworkDataSource makeSut({required http.Client client}) {
+    return SOFUsersNetworkDataSourceImpl(client: client);
   }
 
   final headersToPass = <String, String>{};
@@ -34,7 +34,7 @@ void main() {
     final client = MockClient();
     when(client.get(
             Uri.parse(
-                "https://${SONetworkConfig.usersBaseUrl}/${SONetworkConfig.apiVersion}/users?page=1&pagesize=${SONetworkConfig.pageSize}&site=stackoverflow"),
+                "https://${SOFNetworkConfig.usersBaseUrl}/${SOFNetworkConfig.apiVersion}/users?page=1&pagesize=${SOFNetworkConfig.pageSize}&site=stackoverflow"),
             headers: headersToPass))
         .thenAnswer((_) async => response);
 
@@ -46,14 +46,14 @@ void main() {
   test('FetchUsers should throw Server exception in case of network errors',
       () async {
     final client = makeUsersClient(response: http.Response(errorJson, 403));
-    SOUsersNetworkDataSource sut = makeSut(client: client);
+    SOFUsersNetworkDataSource sut = makeSut(client: client);
 
-    SOResponse? response;
+    SOFResponse? response;
     try {
       response = await sut.fetchUsers(page: 1);
     } catch (error) {
       expect(error is ServerException, true);
-      expect((error as ServerException).type, SOExceptionType.network);
+      expect((error as ServerException).type, SOFExceptionType.network);
     }
 
     expect(response == null, true);
@@ -63,9 +63,9 @@ void main() {
       'FetchUsers should return success response in case api returns status code 200',
       () async {
     final client = makeUsersClient(response: http.Response("body", 200));
-    SOUsersNetworkDataSource sut = makeSut(client: client);
+    SOFUsersNetworkDataSource sut = makeSut(client: client);
 
-    SOResponse? response;
+    SOFResponse? response;
     Exception? exception;
     try {
       response = await sut.fetchUsers(page: 1);
@@ -82,9 +82,9 @@ void main() {
       'FetchUsers should return success response in case api returns status code 201',
       () async {
     final client = makeUsersClient(response: http.Response("body", 201));
-    SOUsersNetworkDataSource sut = makeSut(client: client);
+    SOFUsersNetworkDataSource sut = makeSut(client: client);
 
-    SOResponse? response;
+    SOFResponse? response;
     Exception? exception;
     try {
       response = await sut.fetchUsers(page: 1);

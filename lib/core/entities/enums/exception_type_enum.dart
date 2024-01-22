@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 
-enum SOExceptionType {
+enum SOFExceptionType {
   network,
 }
 
-extension ParseToString on SOExceptionType {
+extension ParseToString on SOFExceptionType {
   String rawString() {
     return "exception.network".tr();
   }

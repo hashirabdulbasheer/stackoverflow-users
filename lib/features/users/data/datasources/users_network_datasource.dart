@@ -3,18 +3,18 @@ import 'package:http/http.dart' as http;
 import '../../../../core/base_classes/base_network_datasource.dart';
 import '../../../../core/configs/network_config.dart';
 import '../../../../core/entities/enums/exception_type_enum.dart';
-import '../../../../core/entities/so_response.dart';
+import '../../../../core/entities/sof_response.dart';
 import '../../../../core/entities/exceptions.dart';
 
-abstract class SOUsersNetworkDataSource extends SOBaseNetworkDataSource {
+abstract class SOFUsersNetworkDataSource extends SOFBaseNetworkDataSource {
   /// Fetch users
-  Future<SOResponse> fetchUsers({int page});
+  Future<SOFResponse> fetchUsers({int page});
 }
 
-class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
+class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
   final http.Client client;
 
-  SOUsersNetworkDataSourceImpl({required this.client});
+  SOFUsersNetworkDataSourceImpl({required this.client});
 
   ///
   /// Fetch the users for a page
@@ -22,14 +22,14 @@ class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
   ///  - Returns error status code if error
   ///
   @override
-  Future<SOResponse> fetchUsers({int page = 1}) async {
+  Future<SOFResponse> fetchUsers({int page = 1}) async {
     Map<String, String> queryParameters = {};
     queryParameters[r'page'] = page.toString();
-    queryParameters[r'pagesize'] = SONetworkConfig.pageSize.toString();
+    queryParameters[r'pagesize'] = SOFNetworkConfig.pageSize.toString();
     queryParameters[r'site'] = "stackoverflow";
 
-    var finalUrl = Uri.https(SONetworkConfig.usersBaseUrl,
-        "/${SONetworkConfig.apiVersion}/users", queryParameters);
+    var finalUrl = Uri.https(SOFNetworkConfig.usersBaseUrl,
+        "/${SOFNetworkConfig.apiVersion}/users", queryParameters);
 
     final headersToPass = <String, String>{};
     headersToPass.addAll(<String, String>{
@@ -41,13 +41,13 @@ class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
 
     // Responses
     if (response.statusCode == 201 || response.statusCode == 200) {
-      return SOResponse(isSuccessful: true, body: response.body);
+      return SOFResponse(isSuccessful: true, body: response.body);
     } else {
       // Error
       throw ServerException(
-          type: SOExceptionType.network,
+          type: SOFExceptionType.network,
           message:
-              "${SOExceptionType.network.rawString()}: ${response.statusCode}");
+              "${SOFExceptionType.network.rawString()}: ${response.statusCode}");
     }
   }
 }

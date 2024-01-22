@@ -1,14 +1,14 @@
-import 'package:either_dart/src/either.dart';
+import 'package:either_dart/either.dart';
 import 'package:stackoverflow_users/core/models/failures.dart';
 
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../datasources/users_network_datasource.dart';
 
-class SOUsersRepositoryImpl extends SOUsersRepository {
-  final SOUsersNetworkDataSource networkDataSource;
+class SOFUsersRepositoryImpl extends SOFUsersRepository {
+  final SOFUsersNetworkDataSource networkDataSource;
 
-  SOUsersRepositoryImpl({required this.networkDataSource});
+  SOFUsersRepositoryImpl({required this.networkDataSource});
 
   @override
   Future<Either<Failure, List<SOFUser>>> fetchUsers() {
