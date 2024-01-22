@@ -14,21 +14,14 @@ import '../../../../utils/test_utils.dart';
 
 @GenerateMocks([http.Client])
 void main() {
-  /// Utils
-  String errorJson =
-      '{"error_id": 403, "error_message": "someError", "error_name": "network_error"}';
-
-  SOFUsersNetworkDataSource makeSut({required http.Client client}) {
-    return SOFUsersNetworkDataSourceImpl(client: client);
-  }
-
   /// Testcases
 
   test('FetchUsers should throw Server exception in case of network errors',
       () async {
-    final client =
-        TestUtils.makeUsersClient(response: http.Response(errorJson, 403));
-    SOFUsersNetworkDataSource sut = makeSut(client: client);
+    final client = TestUtils.makeUsersClient(
+        response: http.Response(TestUtils.errorJson, 403));
+    SOFUsersNetworkDataSource sut =
+        SOFUsersNetworkDataSourceImpl(client: client);
 
     SOFResponse? response;
     try {
@@ -46,7 +39,8 @@ void main() {
       () async {
     final client =
         TestUtils.makeUsersClient(response: http.Response("body", 200));
-    SOFUsersNetworkDataSource sut = makeSut(client: client);
+    SOFUsersNetworkDataSource sut =
+        SOFUsersNetworkDataSourceImpl(client: client);
 
     SOFResponse? response;
     Exception? exception;
@@ -66,7 +60,8 @@ void main() {
       () async {
     final client =
         TestUtils.makeUsersClient(response: http.Response("body", 201));
-    SOFUsersNetworkDataSource sut = makeSut(client: client);
+    SOFUsersNetworkDataSource sut =
+        SOFUsersNetworkDataSourceImpl(client: client);
 
     SOFResponse? response;
     Exception? exception;
