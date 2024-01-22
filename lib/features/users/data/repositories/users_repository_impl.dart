@@ -32,8 +32,9 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
     return Left(getDefaultFailure());
   }
 
+  ///
   /// Mappers
-
+  ///
   List<SOFUser> _mapUsersResponse(String response) {
     var usersList = jsonDecode(response)['items'] as List;
     if (usersList.isNotEmpty) {
