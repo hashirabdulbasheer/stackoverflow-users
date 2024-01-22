@@ -1,8 +1,8 @@
-enum SOErrorType {
+enum SOExceptionType {
   network,
 }
 
-extension ParseToString on SOErrorType {
+extension ParseToString on SOExceptionType {
   String rawString() {
     return "Network Error";
   }

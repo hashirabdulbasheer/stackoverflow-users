@@ -4,7 +4,7 @@ import '../../../../core/base_classes/base_network_datasource.dart';
 import '../../../../core/configs/network_config.dart';
 import '../../../../core/entities/so_response.dart';
 import '../../../../core/entities/exceptions.dart';
-import '../../../../core/enums/error_type_enum.dart';
+import '../../../../core/enums/exception_type_enum.dart';
 
 abstract class SOUsersNetworkDataSource extends SOBaseNetworkDataSource {
   /// Fetch users
@@ -45,9 +45,9 @@ class SOUsersNetworkDataSourceImpl implements SOUsersNetworkDataSource {
     } else {
       // Error
       throw ServerException(
-          type: SOErrorType.network,
+          type: SOExceptionType.network,
           message:
-              "${SOErrorType.network.rawString()}: ${response.statusCode}");
+              "${SOExceptionType.network.rawString()}: ${response.statusCode}");
     }
   }
 }

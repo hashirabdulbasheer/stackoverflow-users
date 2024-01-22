@@ -18,7 +18,7 @@ class GeneralFailure extends Failure with EquatableMixin {
 }
 
 class ServerFailure extends GeneralFailure {
-  final SOErrorType type;
+  final SOExceptionType type;
 
   ServerFailure({required this.type, message}) : super(message: message);
 

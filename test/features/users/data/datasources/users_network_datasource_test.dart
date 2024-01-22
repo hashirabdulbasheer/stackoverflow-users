@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:stackoverflow_users/core/configs/network_config.dart';
 import 'package:stackoverflow_users/core/entities/so_response.dart';
-import 'package:stackoverflow_users/core/enums/error_type_enum.dart';
+import 'package:stackoverflow_users/core/enums/exception_type_enum.dart';
 import 'package:stackoverflow_users/core/entities/exceptions.dart';
 import 'package:stackoverflow_users/features/users/data/datasources/users_network_datasource.dart';
 
@@ -53,7 +53,7 @@ void main() {
       response = await sut.fetchUsers(page: 1);
     } catch (error) {
       expect(error is ServerException, true);
-      expect((error as ServerException).type, SOErrorType.network);
+      expect((error as ServerException).type, SOExceptionType.network);
     }
 
     expect(response == null, true);
