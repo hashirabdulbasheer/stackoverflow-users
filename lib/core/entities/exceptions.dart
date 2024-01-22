@@ -1,9 +1,9 @@
-import '../enums/exception_enum.dart';
+import '../enums/error_type_enum.dart';
 ///
 /// Errors in data source layer
 ///
 class ServerException implements Exception {
-  final SOExceptionType? type;
+  final SOErrorType? type;
   final String? message;
 
   ServerException({this.type, this.message});

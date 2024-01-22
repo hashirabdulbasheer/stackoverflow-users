@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../enums/exception_enum.dart';
+import '../enums/error_type_enum.dart';
 
 ///
 /// Errors in domain layer
@@ -18,7 +18,7 @@ class GeneralFailure extends Failure with EquatableMixin {
 }
 
 class ServerFailure extends GeneralFailure {
-  final SOExceptionType type;
+  final SOErrorType type;
 
   ServerFailure({required this.type, message}) : super(message: message);
 
