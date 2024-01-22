@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:stackoverflow_users/core/configs/network_config.dart';
-import 'package:stackoverflow_users/core/entities/SOResponse.dart';
+import 'package:stackoverflow_users/core/entities/so_response.dart';
 import 'package:stackoverflow_users/core/enums/exception_enum.dart';
 import 'package:stackoverflow_users/core/errors/exceptions.dart';
 import 'package:stackoverflow_users/features/users/data/datasources/users_network_datasource.dart';
