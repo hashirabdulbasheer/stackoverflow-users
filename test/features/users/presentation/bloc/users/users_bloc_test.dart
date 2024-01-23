@@ -10,8 +10,8 @@ import 'package:stackoverflow_users/features/users/domain/usecases/fetch_users_u
 import 'package:stackoverflow_users/features/users/domain/usecases/save_bookmarks_usecase.dart';
 import 'package:stackoverflow_users/features/users/presentation/bloc/users/users.dart';
 
-import '../../utils/test_utils.dart';
-import 'domain/repositories/user_repository_test.dart';
+import '../../../../../utils/test_utils.dart';
+import '../../../domain/repositories/user_repository_test.dart';
 
 void main() {
   SOFBookmarksRepository makeBookmarksRepository(http.Client client) {
