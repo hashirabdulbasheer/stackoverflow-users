@@ -11,7 +11,12 @@ import '../users_list/widgets/error_widget.dart';
 import 'widgets/reputations_list_widget.dart';
 
 class SOFReputationsListPage extends StatefulWidget {
-  const SOFReputationsListPage({Key? key}) : super(key: key);
+  final int userId;
+
+  const SOFReputationsListPage({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   State<SOFReputationsListPage> createState() => _SOFReputationsListPageState();
@@ -92,6 +97,8 @@ class _SOFReputationsListPageState extends State<SOFReputationsListPage> {
   }
 
   void _reloadPage() {
-    _pagingController.refresh();
+    SOFReputationsListPageBloc bloc =
+        context.read<SOFReputationsListPageBloc>();
+    bloc.add(SOFInitializeReputationsListPageEvent(userId: widget.userId));
   }
 }

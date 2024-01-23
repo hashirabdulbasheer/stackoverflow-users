@@ -1,11 +1,11 @@
 import 'package:either_dart/either.dart';
-import 'package:stackoverflow_users/features/users/data/datasources/local/user_dto.dart';
-import 'package:stackoverflow_users/features/users/domain/repositories/bookmarks_repository.dart';
 
 import '../../../../core/db/hive_manager.dart';
 import '../../../../core/misc/logger.dart';
 import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
+import '../../domain/repositories/bookmarks_repository.dart';
+import '../datasources/local/user_dto.dart';
 import '../datasources/network/users_network_datasource.dart';
 
 ///
