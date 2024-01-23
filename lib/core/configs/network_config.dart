@@ -1,4 +1,3 @@
-
 class SOFNetworkConfig {
   /// The stack overflow API version used
   static const String apiVersion = "2.2";

@@ -2,12 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
+import 'core/db/hive_utils.dart';
 import 'core/misc/app_routes.dart';
 import 'core/misc/di_container.dart';
-import 'core/db/hive_utils.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

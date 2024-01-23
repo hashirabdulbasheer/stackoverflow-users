@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 import 'enums/failure_type_enum.dart';
 
-
 ///
 /// Errors in domain layer
 ///

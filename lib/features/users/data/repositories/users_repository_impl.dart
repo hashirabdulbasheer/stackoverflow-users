@@ -30,7 +30,8 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   });
 
   @override
-  Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page, bool? forceApi}) async {
+  Future<Either<Failure, List<SOFUser>>> fetchUsers(
+      {required int page, bool? forceApi}) async {
     try {
       /// Fetch bookmarked users
       List<SOFUserDto>? bookmarkedUsers = bookmarkDataSource.getAll();
@@ -89,7 +90,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   // Users
   List<SOFUser> _mapUsersResponse(
       String response, List<SOFUserDto>? bookmarks) {
-    if(jsonDecode(response)['items'] == null) {
+    if (jsonDecode(response)['items'] == null) {
       return [];
     }
     var usersList = jsonDecode(response)['items'] as List;
@@ -155,7 +156,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
 
   // Reputation
   List<SOFReputation> _mapReputationsResponse(String response) {
-    if(jsonDecode(response)['items'] == null) {
+    if (jsonDecode(response)['items'] == null) {
       return [];
     }
     var reputationsList = jsonDecode(response)['items'] as List;

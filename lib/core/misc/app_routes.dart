@@ -47,7 +47,9 @@ class SOFAppRoutes {
                               ..add(SOFInitializeReputationsListPageEvent(
                                   userId: userId)))
                   ],
-                  child: SOFReputationsListPage(userId: userId,),
+                  child: SOFReputationsListPage(
+                    userId: userId,
+                  ),
                 ));
 
       case '/bookmarks':

@@ -1,33 +1,32 @@
-
 {
-  "exception" : {
+  "exception": {
     "network": "Network Exception"
   },
-  "failure" : {
+  "failure": {
     "network": "Network Failure",
     "general": "General Failure",
     "default": "Failure"
   },
-  "error" : {
+  "error": {
     "location_unavailable": "Location unavailable",
-    "page_not_found" : "Page not found",
+    "page_not_found": "Page not found",
     "no_bookmark": "No bookmarks"
   },
   "usersPage": {
     "bookmark_title": "Bookmarks"
   },
   "reputation": {
-    "title" : "Reputations",
-    "type" : "Reputation Type",
-    "change" : "Change",
-    "created_at" : "Created At",
-    "post_id" : "Post ID"
+    "title": "Reputations",
+    "type": "Reputation Type",
+    "change": "Change",
+    "created_at": "Created At",
+    "post_id": "Post ID"
   },
-  "user" : {
-    "title" : "SOF Users",
-    "name" : "Name",
-    "location" : "Location",
-    "age" : "Age",
-    "reputation" : "Reputation"
+  "user": {
+    "title": "SOF Users",
+    "name": "Name",
+    "location": "Location",
+    "age": "Age",
+    "reputation": "Reputation"
   }
 }
