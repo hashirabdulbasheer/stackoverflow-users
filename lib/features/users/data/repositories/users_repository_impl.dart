@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:either_dart/either.dart';
-import 'package:stackoverflow_users/features/users/data/datasources/local/user_dto.dart';
 
 import '../../../../core/db/hive_manager.dart';
 import '../../../../core/entities/exceptions.dart';
@@ -11,6 +10,7 @@ import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../datasources/local/page_dto.dart';
+import '../datasources/local/user_dto.dart';
 import '../datasources/network/users_network_datasource.dart';
 
 ///
@@ -19,21 +19,26 @@ import '../datasources/network/users_network_datasource.dart';
 class SOFUsersRepositoryImpl extends SOFUsersRepository {
   final SOFUsersNetworkDataSource networkDataSource;
   final SOFUsersLocalDataSource localDataSource;
+  final SOFUsersBookmarkDataSource bookmarkDataSource;
 
   SOFUsersRepositoryImpl({
     required this.networkDataSource,
     required this.localDataSource,
+    required this.bookmarkDataSource,
   });
 
   @override
   Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page}) async {
     try {
+      /// Fetch bookmarked users
+      List<SOFUserDto>? bookmarkedUsers = bookmarkDataSource.getAll();
+
       /// if page is present in db then return that
       SOFPageDto? pageDto = localDataSource.get(page.toString());
       if (pageDto != null && pageDto.users.isNotEmpty) {
         // include cache policy checks
         print("Returning from DB $page");
-        return Right(_mapPageDtoToUsers(pageDto));
+        return Right(_mapPageDtoToUsers(pageDto, bookmarkedUsers));
       }
 
       /// page not found in db - fetch from api
@@ -41,9 +46,11 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       if (response.isSuccessful && response.body?.isNotEmpty == true) {
         print("From API $page");
         // parse response to domain model
-        List<SOFUser> users = _mapUsersResponse(response.body ?? "");
+        List<SOFUser> users =
+            _mapUsersResponse(response.body ?? "", bookmarkedUsers);
         // update db
-        localDataSource.putUpdate(page.toString(), _mapUsersToPageDto(page, users));
+        localDataSource.putUpdate(
+            page.toString(), _mapUsersToPageDto(page, users));
         // return
         return Right(users);
       }
@@ -59,7 +66,8 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   ///
   /// Mappers
   ///
-  List<SOFUser> _mapUsersResponse(String response) {
+  List<SOFUser> _mapUsersResponse(
+      String response, List<SOFUserDto>? bookmarks) {
     var usersList = jsonDecode(response)['items'] as List;
     if (usersList.isNotEmpty) {
       return usersList
@@ -69,13 +77,15 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
               avatar: e["profile_image"],
               location: e["location"] ?? "error.location_unavailable".tr(),
               reputation: e["reputation"],
+              isBookmarked: _isBookmarked(e.id, bookmarks),
               age: e["age"]))
           .toList();
     }
     return [];
   }
 
-  List<SOFUser> _mapPageDtoToUsers(SOFPageDto pageDto) {
+  List<SOFUser> _mapPageDtoToUsers(
+      SOFPageDto pageDto, List<SOFUserDto>? bookmarks) {
     var usersList = pageDto.users;
     if (usersList.isNotEmpty) {
       return usersList
@@ -85,6 +95,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
               avatar: e.avatar,
               location: e.location,
               reputation: e.reputation,
+              isBookmarked: _isBookmarked(e.id, bookmarks),
               age: e.age))
           .toList();
     }
@@ -104,5 +115,17 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
                 age: e.age))
             .toList(),
         lastUpdateTimeMs: DateTime.now().millisecondsSinceEpoch);
+  }
+
+  bool _isBookmarked(int userId, List<SOFUserDto>? bookmarks) {
+    try {
+      SOFUserDto? user =
+          bookmarks?.firstWhere((element) => element.id == userId);
+      if (user != null) {
+        return true;
+      }
+    } catch (_) {}
+
+    return false;
   }
 }

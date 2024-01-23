@@ -75,6 +75,7 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
               avatar: e.avatar,
               location: e.location,
               reputation: e.reputation,
+              isBookmarked: false,
               age: e.age))
           .toList();
     }

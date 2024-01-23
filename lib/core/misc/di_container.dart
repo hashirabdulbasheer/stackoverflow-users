@@ -24,6 +24,7 @@ class SOFDiContainer {
     sl.registerFactory<SOFUsersRepository>(() => SOFUsersRepositoryImpl(
           networkDataSource: sl(),
           localDataSource: sl(),
+          bookmarkDataSource: sl(),
         ));
     sl.registerFactory<SOFBookmarksRepository>(() => SOFBookmarksRepositoryImpl(
           networkDataSource: sl(),
