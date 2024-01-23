@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entities/user.dart';
+import '../../../bloc/bookmarks/bookmarks.dart';
+import '../../users_list/widgets/users_list_item_widget.dart';
 
 class SOFBookmarksListWidget extends StatelessWidget {
   final List<SOFUser> users;
@@ -33,7 +36,12 @@ class SOFBookmarksListWidget extends StatelessWidget {
           child: ListView.separated(
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(users[index].name),
+                  title: SOFUsersListItemWidget(user: users[index]),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete,
+                        size: 40, color: Colors.black54),
+                    onPressed: () => _onDeleteTapped(context, users[index]),
+                  ),
                 );
               },
               separatorBuilder: (context, index) {
@@ -41,5 +49,10 @@ class SOFBookmarksListWidget extends StatelessWidget {
               },
               itemCount: users.length),
         ));
+  }
+
+  void _onDeleteTapped(BuildContext context, SOFUser user) {
+    SOFBookmarksListPageBloc bloc = context.read<SOFBookmarksListPageBloc>();
+    bloc.add(SOFDeleteBookmarkListPageEvent(user: user));
   }
 }
