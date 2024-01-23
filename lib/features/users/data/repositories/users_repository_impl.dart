@@ -77,7 +77,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
               avatar: e["profile_image"],
               location: e["location"] ?? "error.location_unavailable".tr(),
               reputation: e["reputation"],
-              isBookmarked: _isBookmarked(e.id, bookmarks),
+              isBookmarked: _isBookmarked(e["user_id"], bookmarks),
               age: e["age"]))
           .toList();
     }
@@ -122,6 +122,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       SOFUserDto? user =
           bookmarks?.firstWhere((element) => element.id == userId);
       if (user != null) {
+        print("Found ${user.name}");
         return true;
       }
     } catch (_) {}

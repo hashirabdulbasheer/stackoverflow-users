@@ -2,14 +2,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/user.dart';
 import '../../../domain/usecases/fetch_users_usecase.dart';
+import '../../../domain/usecases/save_bookmarks_usecase.dart';
 import 'users.dart';
 
 class SOFUsersListPageBloc
     extends Bloc<SOFUsersListPageEvent, SOFUsersListPageState> {
   final SOFFetchUsersUseCase fetchUsersUseCase;
+  final SOFSaveBookmarksUseCase saveBookmarksUseCase;
 
-  SOFUsersListPageBloc({required this.fetchUsersUseCase})
-      : super(SOFUsersListPageLoadingState()) {
+  SOFUsersListPageBloc({
+    required this.fetchUsersUseCase,
+    required this.saveBookmarksUseCase,
+  }) : super(SOFUsersListPageLoadingState()) {
     // Init
     on<SOFInitializeUserListPageEvent>(
         (event, emit) => _onInitializeEvent(event, emit));
@@ -17,6 +21,9 @@ class SOFUsersListPageBloc
     // load event called on initial page load and when scrolled to bottom or refresh
     on<SOFUsersListPageLoadEvent>(
         (event, emit) => _onPageLoadEvent(event, emit));
+
+    on<SOFSaveBookmarkEvent>(
+        (event, emit) => _onSaveBookmarkEvent(event, emit));
   }
 
   ///
@@ -65,8 +72,30 @@ class SOFUsersListPageBloc
     }
   }
 
+  void _onSaveBookmarkEvent(event, emit) async {
+    if (state is SOFUsersListPageLoadedState) {
+      SOFUsersListPageLoadedState currentState =
+          state as SOFUsersListPageLoadedState;
+      final response = await _saveBookmark(event.user);
+      if (response.isRight) {
+        // success - load again
+        add(SOFUsersListPageLoadEvent(page: currentState.page));
+      } else {
+        // failure
+        emit(SOFUsersListPageErrorState(
+          failure: response.left,
+          currentPage: currentState.page,
+        ));
+      }
+    }
+  }
+
   /// FETCH
   Future<dynamic> _fetchUsers(int page) async {
     return await fetchUsersUseCase.call(FetchUsersListParams(page: page));
+  }
+
+  Future<dynamic> _saveBookmark(SOFUser user) async {
+    return saveBookmarksUseCase.call(SaveBookmarkParams(user: user));
   }
 }

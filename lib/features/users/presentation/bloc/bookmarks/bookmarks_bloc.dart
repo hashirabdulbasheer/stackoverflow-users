@@ -23,9 +23,6 @@ class SOFBookmarksListPageBloc
 
     on<SOFDeleteBookmarkListPageEvent>(
         (event, emit) => _onDeleteEvent(event, emit));
-
-    on<SOFSaveBookmarkListPageEvent>(
-        (event, emit) => _onSaveEvent(event, emit));
   }
 
   ///
@@ -56,17 +53,6 @@ class SOFBookmarksListPageBloc
     }
   }
 
-  void _onSaveEvent(event, emit) async {
-    final response = await _saveBookmark(event.user);
-    if (response.isRight) {
-      // success - load again
-      add(SOFLoadBookmarksListPageEvent());
-    } else {
-      // failure
-      emit(SOFBookmarksListPageErrorState(failure: response.left));
-    }
-  }
-
   /// FETCH
   Future<dynamic> _fetchBookmarks() async {
     return await fetchBookmarksUseCase.call(NoParams());
@@ -74,9 +60,5 @@ class SOFBookmarksListPageBloc
 
   Future<dynamic> _deleteBookmark(SOFUser user) async {
     return deleteBookmarksUseCase.call(DeleteBookmarkParams(user: user));
-  }
-
-  Future<dynamic> _saveBookmark(SOFUser user) async {
-    return saveBookmarksUseCase.call(SaveBookmarkParams(user: user));
   }
 }

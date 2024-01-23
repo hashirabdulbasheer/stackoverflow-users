@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/user.dart';
+
 abstract class SOFUsersListPageEvent {}
 
 class SOFInitializeUserListPageEvent extends SOFUsersListPageEvent {}
@@ -13,4 +15,14 @@ class SOFUsersListPageLoadEvent extends SOFUsersListPageEvent
 
   @override
   List<Object?> get props => [page];
+}
+
+class SOFSaveBookmarkEvent extends SOFUsersListPageEvent
+    with EquatableMixin {
+  final SOFUser user;
+
+  SOFSaveBookmarkEvent({required this.user});
+
+  @override
+  List<Object?> get props => [user];
 }

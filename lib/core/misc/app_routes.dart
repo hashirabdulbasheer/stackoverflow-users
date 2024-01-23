@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stackoverflow_users/features/users/domain/usecases/delete_bookmarks_usecase.dart';
-import 'package:stackoverflow_users/features/users/domain/usecases/fetch_bookmarks_usecase.dart';
-import 'package:stackoverflow_users/features/users/domain/usecases/save_bookmarks_usecase.dart';
 
+import '../../features/users/domain/usecases/delete_bookmarks_usecase.dart';
+import '../../features/users/domain/usecases/fetch_bookmarks_usecase.dart';
 import '../../features/users/domain/usecases/fetch_users_usecase.dart';
+import '../../features/users/domain/usecases/save_bookmarks_usecase.dart';
 import '../../features/users/presentation/bloc/bookmarks/bookmarks.dart';
 import '../../features/users/presentation/bloc/users/users.dart';
 import '../../features/users/presentation/pages/bookmarks/bookmarks_list_page.dart';
@@ -21,8 +21,10 @@ class SOFAppRoutes {
                   providers: [
                     BlocProvider<SOFUsersListPageBloc>(
                         create: (BuildContext context) => SOFUsersListPageBloc(
-                            fetchUsersUseCase: sl<SOFFetchUsersUseCase>())
-                          ..add(SOFInitializeUserListPageEvent()))
+                              fetchUsersUseCase: sl<SOFFetchUsersUseCase>(),
+                              saveBookmarksUseCase:
+                                  sl<SOFSaveBookmarksUseCase>(),
+                            )..add(SOFInitializeUserListPageEvent()))
                   ],
                   child: const SOFUsersListPage(),
                 ));

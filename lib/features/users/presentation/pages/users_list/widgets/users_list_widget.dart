@@ -9,11 +9,13 @@ import 'users_list_item_widget.dart';
 class SOFUsersListWidget extends StatelessWidget {
   final List<SOFUser> users;
   final PagingController<int, SOFUser> pagingController;
+  final Function(SOFUser) onBookmarkTapped;
 
   const SOFUsersListWidget({
     Key? key,
     required this.users,
     required this.pagingController,
+    required this.onBookmarkTapped,
   }) : super(key: key);
 
   @override
@@ -49,13 +51,11 @@ class SOFUsersListWidget extends StatelessWidget {
                     size: 40,
                     color: Colors.black54,
                   ),
-                  onPressed: () => _onBookmarkTapped(users[index]),
+                  onPressed: () => onBookmarkTapped(users[index]),
                 ),
               ),
             ),
           ),
         ));
   }
-
-  void _onBookmarkTapped(SOFUser user) {}
 }

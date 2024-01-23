@@ -69,6 +69,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
               return SOFUsersListWidget(
                 users: state.users,
                 pagingController: _pagingController,
+                onBookmarkTapped: (user) => _onBookmarkTapped(user),
               );
             }
             // Default
@@ -93,5 +94,14 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
 
   void _reloadPage() {
     _pagingController.refresh();
+  }
+
+  void _onBookmarkTapped(SOFUser user) {
+    SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
+    if(user.isBookmarked) {
+
+    } else {
+      bloc.add(SOFSaveBookmarkEvent(user: user));
+    }
   }
 }
