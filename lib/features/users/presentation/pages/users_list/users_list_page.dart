@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -37,7 +38,16 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/bookmarks');
+            },
+            child: Text("usersPage.bookmark_title".tr()),
+          )
+        ],
+      ),
       body: BlocConsumer<SOFUsersListPageBloc, SOFUsersListPageState>(
           listener: (context, state) {},
           builder: (context, state) {

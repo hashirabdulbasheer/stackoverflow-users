@@ -11,5 +11,8 @@
   "error" : {
     "location_unavailable": "Location unavailable",
     "page_not_found" : "Page not found"
+  },
+  "usersPage": {
+    "bookmark_title": "Bookmarks"
   }
 }
