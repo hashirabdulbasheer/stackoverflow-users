@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'core/misc/app_routes.dart';
 import 'core/misc/di_container.dart';
-import 'features/users/presentation/pages/users_list_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SOFUsersListPage(),
+      initialRoute: '/',
+      onGenerateRoute: SOFAppRoutes.getPageRoute,
     );
   }
 }
