@@ -5,6 +5,7 @@ import '../../features/users/data/datasources/network/users_network_datasource.d
 import '../../features/users/data/repositories/users_repository_impl.dart';
 import '../../features/users/domain/repositories/users_repository.dart';
 import '../../features/users/domain/usecases/fetch_users_usecase.dart';
+import '../db/hive_manager.dart';
 
 final sl = GetIt.instance;
 
@@ -21,5 +22,8 @@ class SOFDiContainer {
     /// use-cases
     sl.registerFactory<SOFFetchUsersUseCase>(
         () => SOFFetchUsersUseCase(repository: sl()));
+
+    /// Hive db
+    sl.registerLazySingleton<SOFUsersDatabase>(() => SOFUsersDatabase());
   }
 }

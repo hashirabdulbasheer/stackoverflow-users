@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'core/misc/app_routes.dart';
 import 'core/misc/di_container.dart';
-import 'core/misc/hive_utils.dart';
+import 'core/db/hive_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
