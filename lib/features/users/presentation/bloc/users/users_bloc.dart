@@ -41,6 +41,7 @@ class SOFUsersListPageBloc
 
   void _onInitializeEvent(event, emit) async {
     // fetch
+    emit(SOFUsersListPageLoadingState());
     final response = await _fetchUsers(page: 1);
     if (response.isRight) {
       // success
@@ -119,6 +120,7 @@ class SOFUsersListPageBloc
 
   void _onForceLoadEvent(event, emit) async {
     // fetch
+    emit(SOFUsersListPageLoadingState());
     final response = await _fetchUsers(page: 1, forceApi: true);
     if (response.isRight) {
       // success

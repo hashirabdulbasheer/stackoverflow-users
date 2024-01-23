@@ -43,7 +43,11 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
           TextButton(
             onPressed: () {
               Navigator.pushNamed(context, '/bookmarks').then((value) {
-                _pagingController.refresh();
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  SOFUsersListPageBloc bloc =
+                      context.read<SOFUsersListPageBloc>();
+                  bloc.add(SOFInitializeUserListPageEvent());
+                });
               });
             },
             child: Text("usersPage.bookmark_title".tr()),
