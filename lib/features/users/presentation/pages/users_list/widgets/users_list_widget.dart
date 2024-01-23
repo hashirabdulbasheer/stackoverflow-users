@@ -9,12 +9,14 @@ import 'users_list_item_widget.dart';
 class SOFUsersListWidget extends StatelessWidget {
   final PagingController<int, SOFUser> pagingController;
   final Function(SOFUser) onBookmarkTapped;
+  final Function onRefreshRequested;
 
-  const SOFUsersListWidget({
-    Key? key,
-    required this.pagingController,
-    required this.onBookmarkTapped,
-  }) : super(key: key);
+  const SOFUsersListWidget(
+      {Key? key,
+      required this.pagingController,
+      required this.onBookmarkTapped,
+      required this.onRefreshRequested})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,7 @@ class SOFUsersListWidget extends StatelessWidget {
           color: Colors.white,
           backgroundColor: Colors.blue,
           strokeWidth: 4.0,
-          onRefresh: () => Future.sync(
-            () => pagingController.refresh(),
-          ),
+          onRefresh: () => Future.sync(() => onRefreshRequested()),
           child: PagedListView<int, SOFUser>.separated(
             separatorBuilder: (context, index) => const Divider(),
             pagingController: pagingController,

@@ -52,6 +52,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
       body: BlocConsumer<SOFUsersListPageBloc, SOFUsersListPageState>(
           listener: (context, state) {},
           builder: (context, state) {
+            print(state.runtimeType.toString());
             if (state is SOFUsersListPageLoadingState) {
               /// Loading
               return const Center(child: CircularProgressIndicator());
@@ -60,7 +61,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
               return Center(
                   child: SOFErrorWidget(
                 failure: state.failure as GeneralFailure,
-                onRetry: () => _reloadPage(),
+                onRetry: () => _onRefreshRequested(),
               ));
             } else if (state is SOFUsersListPageLoadedState) {
               /// Loaded state
@@ -73,6 +74,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
               return SOFUsersListWidget(
                 pagingController: _pagingController,
                 onBookmarkTapped: (user) => _onBookmarkTapped(user),
+                onRefreshRequested: () => _onRefreshRequested(),
               );
             }
             // Default
@@ -96,10 +98,6 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
     }
   }
 
-  void _reloadPage() {
-    _pagingController.refresh();
-  }
-
   void _onBookmarkTapped(SOFUser user) {
     SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
     if (user.isBookmarked) {
@@ -107,5 +105,10 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
     } else {
       bloc.add(SOFSaveBookmarkEvent(user: user));
     }
+  }
+
+  void _onRefreshRequested() {
+    SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
+    bloc.add(SOFInitializeUserListPageEvent());
   }
 }

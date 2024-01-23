@@ -59,11 +59,14 @@ class SOFUsersListPageBloc
   void _onPageLoadEvent(event, emit) async {
     if (state is SOFUsersListPageLoadedState) {
       // fetch
+      SOFUsersListPageLoadedState currentState =
+          state as SOFUsersListPageLoadedState;
+      emit(currentState.copyWith(
+        isLoading: true,
+      ));
       final response = await _fetchUsers(event.page);
       if (response.isRight) {
         // success
-        SOFUsersListPageLoadedState currentState =
-        state as SOFUsersListPageLoadedState;
         List<SOFUser> users = response.right;
         List<SOFUser> merged = _combine(currentState.users, users);
         emit(currentState.copyWith(
@@ -111,16 +114,17 @@ class SOFUsersListPageBloc
     }
   }
 
-  List<SOFUser> _combine(List<SOFUser> users1, List<SOFUser> users2) {
+  // previous users will be replaced with new
+  List<SOFUser> _combine(List<SOFUser> previousUsers, List<SOFUser> newUsers) {
     // Improve logic later on
     Map<int, SOFUser> shelf = {};
-    for (SOFUser user in users1) {
+    for (SOFUser user in previousUsers) {
       shelf[user.id] = user;
     }
-    for (SOFUser user in users2) {
+    for (SOFUser user in newUsers) {
       shelf[user.id] = user;
     }
-    return shelf.values.toList();
+    return List.from(shelf.values.toList());
   }
 
   /// FETCH
