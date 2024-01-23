@@ -61,13 +61,6 @@ class SOFUsersListPageBloc
           page: event.page,
           isLoading: false,
         ));
-      } else {
-        // failure
-        emit(currentState.copyWith(isLoading: false));
-        emit(SOFUsersListPageErrorState(
-          failure: response.left,
-          currentPage: event.page,
-        ));
       }
     }
   }
