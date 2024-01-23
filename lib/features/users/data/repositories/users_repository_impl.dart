@@ -7,6 +7,7 @@ import '../../../../core/db/hive_manager.dart';
 import '../../../../core/entities/exceptions.dart';
 import '../../../../core/entities/sof_response.dart';
 import '../../../../core/models/failures.dart';
+import '../../domain/entities/reputation.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../datasources/local/page_dto.dart';
@@ -61,6 +62,12 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
     }
 
     return Left(getDefaultFailure());
+  }
+
+  @override
+  Future<Either<Failure, List<SOFReputation>>> fetchReputations({required int userId, required int page}) {
+    // TODO: implement fetchReputations
+    throw UnimplementedError();
   }
 
   ///
