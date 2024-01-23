@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/models/failures.dart';
 import '../../bloc/bookmarks/bookmarks.dart';
 import '../users_list/widgets/error_widget.dart';
+import 'widgets/bookmarks_list_widget.dart';
 
 class SOFBookmarksDisplayPage extends StatelessWidget {
   const SOFBookmarksDisplayPage({Key? key}) : super(key: key);
@@ -30,12 +31,15 @@ class SOFBookmarksDisplayPage extends StatelessWidget {
               ));
             } else if (state is SOFBookmarksListPageLoadedState) {
               /// Loaded state
+              if (state.users.isEmpty) {
+                return Center(child: Text("error.no_bookmark".tr()));
+              }
               return RefreshIndicator(
                   color: Colors.white,
                   backgroundColor: Colors.blue,
                   strokeWidth: 4.0,
                   onRefresh: () => _pullRefresh(context),
-                  child: Text(state.users.length.toString()));
+                  child: SOFBookmarksListWidget(users: state.users));
             }
             // Default
             return const Center(

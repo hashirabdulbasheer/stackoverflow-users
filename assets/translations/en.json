@@ -10,7 +10,8 @@
   },
   "error" : {
     "location_unavailable": "Location unavailable",
-    "page_not_found" : "Page not found"
+    "page_not_found" : "Page not found",
+    "no_bookmark": "No bookmarks"
   },
   "usersPage": {
     "bookmark_title": "Bookmarks"
