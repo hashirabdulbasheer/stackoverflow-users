@@ -11,7 +11,7 @@ class SOFUserDto {
   final String name;
 
   @HiveField(2)
-  final Uri avatar;
+  final String avatar;
 
   @HiveField(3)
   final String location;

@@ -44,6 +44,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future putAtIndex<T>(int index, T item) async {
     try {
       await box.putAt(index, item);
+      return;
     } catch (_) {
       rethrow;
     }
@@ -81,9 +82,8 @@ class SOFDatabaseImpl extends SOFDatabase {
     try {
       final data = box.getAt(index);
       return data;
-    } catch (_) {
-      rethrow;
-    }
+    } catch (_) {}
+    return null;
   }
 
   @override
@@ -127,6 +127,6 @@ class SOFDatabaseImpl extends SOFDatabase {
   Box get box => Hive.box(databaseName);
 }
 
-class SOFUsersDatabase extends SOFDatabaseImpl {
-  SOFUsersDatabase() : super('sof_users_box');
+class SOFPagesDatabase extends SOFDatabaseImpl {
+  SOFPagesDatabase() : super('sof_pages_box');
 }

@@ -16,14 +16,16 @@ class SOFDiContainer {
         () => SOFUsersNetworkDataSourceImpl(client: networkClient));
 
     /// repositories
-    sl.registerFactory<SOFUsersRepository>(
-        () => SOFUsersRepositoryImpl(networkDataSource: sl()));
+    sl.registerFactory<SOFUsersRepository>(() => SOFUsersRepositoryImpl(
+          networkDataSource: sl(),
+          pagesDatabase: sl(),
+        ));
 
     /// use-cases
     sl.registerFactory<SOFFetchUsersUseCase>(
         () => SOFFetchUsersUseCase(repository: sl()));
 
     /// Hive db
-    sl.registerLazySingleton<SOFUsersDatabase>(() => SOFUsersDatabase());
+    sl.registerLazySingleton<SOFPagesDatabase>(() => SOFPagesDatabase());
   }
 }
