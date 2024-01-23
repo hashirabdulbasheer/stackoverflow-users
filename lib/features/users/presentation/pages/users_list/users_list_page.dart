@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +57,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
               return Center(
                   child: SOFErrorWidget(
                 failure: state.failure as GeneralFailure,
-                onRetry: () => _reloadPage(context, state.currentPage),
+                onRetry: () => _reloadPage(),
               ));
             } else if (state is SOFUsersListPageLoadedState) {
               /// Loaded state
@@ -68,24 +66,10 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
                 error: null,
                 itemList: state.users,
               );
-              return ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    physics: const BouncingScrollPhysics(),
-                    dragDevices: {
-                      PointerDeviceKind.touch,
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.trackpad
-                    },
-                  ),
-                  child: RefreshIndicator(
-                      color: Colors.white,
-                      backgroundColor: Colors.blue,
-                      strokeWidth: 4.0,
-                      onRefresh: () => _pullRefresh(context, 1),
-                      child: SOFUsersListWidget(
-                        users: state.users,
-                        pagingController: _pagingController,
-                      )));
+              return SOFUsersListWidget(
+                users: state.users,
+                pagingController: _pagingController,
+              );
             }
             // Default
             return const Center(
@@ -107,13 +91,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
     }
   }
 
-  Future<void> _pullRefresh(BuildContext context, int page) async {
-    await Future.delayed(const Duration(seconds: 1));
-    _reloadPage(context, page);
-  }
-
-  void _reloadPage(BuildContext context, int page) {
-    SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
-    bloc.add(SOFUsersListPageLoadEvent(page: page));
+  void _reloadPage() {
+    _pagingController.refresh();
   }
 }

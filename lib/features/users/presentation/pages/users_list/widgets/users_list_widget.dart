@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -15,15 +17,32 @@ class SOFUsersListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int, SOFUser>.separated(
-      separatorBuilder: (context, index) => const Divider(),
-      pagingController: pagingController,
-      physics: const AlwaysScrollableScrollPhysics(),
-      builderDelegate: PagedChildBuilderDelegate<SOFUser>(
-        itemBuilder: (context, item, index) => ListTile(
-          title: Text('item ${users[index].name}'),
+    return ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          physics: const BouncingScrollPhysics(),
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.trackpad
+          },
         ),
-      ),
-    );
+        child: RefreshIndicator(
+          color: Colors.white,
+          backgroundColor: Colors.blue,
+          strokeWidth: 4.0,
+          onRefresh: () => Future.sync(
+            () => pagingController.refresh(),
+          ),
+          child: PagedListView<int, SOFUser>.separated(
+            separatorBuilder: (context, index) => const Divider(),
+            pagingController: pagingController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            builderDelegate: PagedChildBuilderDelegate<SOFUser>(
+              itemBuilder: (context, item, index) => ListTile(
+                title: Text('item ${users[index].name}'),
+              ),
+            ),
+          ),
+        ));
   }
 }
