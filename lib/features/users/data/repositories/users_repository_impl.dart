@@ -38,14 +38,12 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       SOFPageDto? pageDto = localDataSource.get(page.toString());
       if (pageDto != null && pageDto.users.isNotEmpty) {
         // include cache policy checks
-        print("Returning from DB $page");
         return Right(_mapPageDtoToUsers(pageDto, bookmarkedUsers));
       }
 
       /// page not found in db - fetch from api
       SOFResponse response = await networkDataSource.fetchUsers(page: page);
       if (response.isSuccessful && response.body?.isNotEmpty == true) {
-        print("From API $page");
         // parse response to domain model
         List<SOFUser> users =
             _mapUsersResponse(response.body ?? "", bookmarkedUsers);
@@ -57,15 +55,14 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       }
     } on ServerException catch (error) {
       return Left(getFailure(error));
-    } catch (error) {
-      print(error.toString());
-    }
+    } catch (_) {}
 
     return Left(getDefaultFailure());
   }
 
   @override
-  Future<Either<Failure, List<SOFReputation>>> fetchReputations({required int userId, required int page}) {
+  Future<Either<Failure, List<SOFReputation>>> fetchReputations(
+      {required int userId, required int page}) {
     // TODO: implement fetchReputations
     throw UnimplementedError();
   }
