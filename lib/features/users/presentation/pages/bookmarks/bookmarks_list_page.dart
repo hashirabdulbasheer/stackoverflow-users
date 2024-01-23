@@ -7,8 +7,8 @@ import '../../bloc/bookmarks/bookmarks.dart';
 import '../users_list/widgets/error_widget.dart';
 import 'widgets/bookmarks_list_widget.dart';
 
-class SOFBookmarksDisplayPage extends StatelessWidget {
-  const SOFBookmarksDisplayPage({Key? key}) : super(key: key);
+class SOFBookmarksListPage extends StatelessWidget {
+  const SOFBookmarksListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

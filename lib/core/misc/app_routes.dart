@@ -63,7 +63,7 @@ class SOFAppRoutes {
                                     sl<SOFDeleteBookmarksUseCase>())
                               ..add(SOFLoadBookmarksListPageEvent()))
                   ],
-                  child: const SOFBookmarksDisplayPage(),
+                  child: const SOFBookmarksListPage(),
                 ));
 
       default:
