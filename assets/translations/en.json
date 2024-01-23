@@ -17,6 +17,10 @@
     "bookmark_title": "Bookmarks"
   },
   "reputation": {
-    "title" : "title"
+    "title" : "Reputations",
+    "type" : "Reputation Type",
+    "change" : "Change",
+    "created_at" : "Created At",
+    "post_id" : "Post ID"
   }
 }
