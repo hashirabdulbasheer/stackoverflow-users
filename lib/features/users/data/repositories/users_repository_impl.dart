@@ -71,7 +71,9 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       }
     } on ServerException catch (error) {
       return Left(getFailure(error));
-    } catch (_) {}
+    } catch (error) {
+      print(error.toString());
+    }
 
     return Left(getDefaultFailure());
   }

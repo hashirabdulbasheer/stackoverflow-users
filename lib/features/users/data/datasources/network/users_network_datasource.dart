@@ -60,11 +60,12 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
     Map<String, String> queryParameters = {};
     queryParameters[r'page'] = page.toString();
     queryParameters[r'pagesize'] = SOFNetworkConfig.pageSize.toString();
-    queryParameters[r'userId'] = userId.toString();
     queryParameters[r'site'] = "stackoverflow";
 
-    var finalUrl = Uri.https(SOFNetworkConfig.usersBaseUrl,
-        "/${SOFNetworkConfig.apiVersion}/reputation-history", queryParameters);
+    var finalUrl = Uri.https(
+        SOFNetworkConfig.usersBaseUrl,
+        "/${SOFNetworkConfig.apiVersion}/users/$userId/reputation-history",
+        queryParameters);
 
     final headersToPass = <String, String>{};
     headersToPass.addAll(<String, String>{
