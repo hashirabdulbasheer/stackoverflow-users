@@ -155,6 +155,9 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
 
   // Reputation
   List<SOFReputation> _mapReputationsResponse(String response) {
+    if(jsonDecode(response)['items'] == null) {
+      return [];
+    }
     var reputationsList = jsonDecode(response)['items'] as List;
     if (reputationsList.isNotEmpty) {
       return reputationsList
