@@ -9,6 +9,7 @@
     "default": "Failure"
   },
   "error" : {
-    "location_unavailable": "Location unavailable"
+    "location_unavailable": "Location unavailable",
+    "page_not_found" : "Page not found"
   }
 }
