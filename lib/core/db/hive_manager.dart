@@ -127,6 +127,6 @@ class SOFDatabaseImpl extends SOFDatabase {
   Box get box => Hive.box(databaseName);
 }
 
-class SOFPagesDatabase extends SOFDatabaseImpl {
-  SOFPagesDatabase() : super('sof_pages_box');
+class SOFUsersLocalDataSource extends SOFDatabaseImpl {
+  SOFUsersLocalDataSource() : super('sof_pages_box');
 }

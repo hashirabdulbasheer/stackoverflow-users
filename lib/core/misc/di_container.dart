@@ -18,7 +18,7 @@ class SOFDiContainer {
     /// repositories
     sl.registerFactory<SOFUsersRepository>(() => SOFUsersRepositoryImpl(
           networkDataSource: sl(),
-          pagesDatabase: sl(),
+          localDataSource: sl(),
         ));
 
     /// use-cases
@@ -26,6 +26,6 @@ class SOFDiContainer {
         () => SOFFetchUsersUseCase(repository: sl()));
 
     /// Hive db
-    sl.registerLazySingleton<SOFPagesDatabase>(() => SOFPagesDatabase());
+    sl.registerLazySingleton<SOFUsersLocalDataSource>(() => SOFUsersLocalDataSource());
   }
 }

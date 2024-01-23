@@ -18,18 +18,18 @@ import '../datasources/network/users_network_datasource.dart';
 ///
 class SOFUsersRepositoryImpl extends SOFUsersRepository {
   final SOFUsersNetworkDataSource networkDataSource;
-  final SOFPagesDatabase pagesDatabase;
+  final SOFUsersLocalDataSource localDataSource;
 
   SOFUsersRepositoryImpl({
     required this.networkDataSource,
-    required this.pagesDatabase,
+    required this.localDataSource,
   });
 
   @override
   Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page}) async {
     try {
       /// if page is present in db then return that
-      SOFPageDto? pageDto = pagesDatabase.get(page.toString());
+      SOFPageDto? pageDto = localDataSource.get(page.toString());
       if (pageDto != null && pageDto.users.isNotEmpty) {
         // include cache policy checks
         print("Returning from DB $page");
@@ -43,7 +43,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
         // parse response to domain model
         List<SOFUser> users = _mapUsersResponse(response.body ?? "");
         // update db
-        pagesDatabase.putUpdate(page.toString(), _mapUsersToPageDto(page, users));
+        localDataSource.putUpdate(page.toString(), _mapUsersToPageDto(page, users));
         // return
         return Right(users);
       }
