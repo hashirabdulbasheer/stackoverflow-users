@@ -16,7 +16,7 @@ class SOFFetchUsersUseCase
   Future<Either<Failure, List<SOFUser>>> call(FetchUsersListParams params) {
     return repository.fetchUsers(
       page: params.page,
-      forceLoadFromApi: params.forceLoadFromApi,
+      forceApi: params.forceLoadFromApi,
     );
   }
 }

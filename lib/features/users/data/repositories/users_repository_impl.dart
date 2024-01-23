@@ -30,14 +30,14 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   });
 
   @override
-  Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page, bool? forceLoadFromApi}) async {
+  Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page, bool? forceApi}) async {
     try {
       /// Fetch bookmarked users
       List<SOFUserDto>? bookmarkedUsers = bookmarkDataSource.getAll();
 
       /// if page is present in db then return that
       SOFPageDto? pageDto = localDataSource.get(page.toString());
-      if (pageDto != null && pageDto.users.isNotEmpty && forceLoadFromApi != true) {
+      if (pageDto != null && pageDto.users.isNotEmpty && forceApi != true) {
         // include cache policy checks later on
         SOFLogger.d("DB: Page $page");
         return Right(_mapPageDtoToUsers(pageDto, bookmarkedUsers));
