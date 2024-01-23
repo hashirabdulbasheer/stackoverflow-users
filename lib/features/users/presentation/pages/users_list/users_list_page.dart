@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/users/users.dart';
+import '../../bloc/users/users.dart';
 
 class SOFUsersListPage extends StatelessWidget {
   const SOFUsersListPage({Key? key}) : super(key: key);

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/users/domain/usecases/fetch_users_usecase.dart';
 import '../../features/users/presentation/bloc/users/users.dart';
-import '../../features/users/presentation/pages/users_list_page.dart';
+import '../../features/users/presentation/pages/users_list/users_list_page.dart';
 import 'di_container.dart';
 
 class SOFAppRoutes {
