@@ -8,7 +8,7 @@ import '../../../../core/entities/sof_response.dart';
 import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
-import '../datasources/users_network_datasource.dart';
+import '../datasources/network/users_network_datasource.dart';
 
 ///
 ///  User repository implementation

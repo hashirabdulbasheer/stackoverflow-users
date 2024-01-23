@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:stackoverflow_users/core/models/enums/failure_type_enum.dart';
 import 'package:stackoverflow_users/core/models/failures.dart';
-import 'package:stackoverflow_users/features/users/data/datasources/users_network_datasource.dart';
+import 'package:stackoverflow_users/features/users/data/datasources/network/users_network_datasource.dart';
 import 'package:stackoverflow_users/features/users/data/repositories/users_repository_impl.dart';
 import 'package:stackoverflow_users/features/users/domain/repositories/users_repository.dart';
 
