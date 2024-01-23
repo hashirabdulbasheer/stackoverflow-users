@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../domain/entities/user.dart';
+import 'users_list_item_widget.dart';
 
 class SOFUsersListWidget extends StatelessWidget {
   final List<SOFUser> users;
@@ -39,7 +40,15 @@ class SOFUsersListWidget extends StatelessWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             builderDelegate: PagedChildBuilderDelegate<SOFUser>(
               itemBuilder: (context, item, index) => ListTile(
-                title: Text('item ${users[index].name}'),
+                title: SOFUsersListItemWidget(user: users[index]),
+                trailing: IconButton(
+                  icon: const Icon(
+                    Icons.star_border_rounded,
+                    size: 40,
+                    color: Colors.black54,
+                  ),
+                  onPressed: () {},
+                ),
               ),
             ),
           ),
