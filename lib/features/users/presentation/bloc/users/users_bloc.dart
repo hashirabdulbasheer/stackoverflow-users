@@ -11,8 +11,8 @@ class SOFUsersListPageBloc
   SOFUsersListPageBloc({required this.fetchUsersUseCase})
       : super(SOFUsersListPageLoadingState()) {
     // load event called on initial page load and when scrolled to bottom or refresh
-    on<SOFUsersListPageLoadEvent>((event, emit) => _onPageLoadEvent(event, emit));
-
+    on<SOFUsersListPageLoadEvent>(
+        (event, emit) => _onPageLoadEvent(event, emit));
   }
 
   /// Handlers
@@ -25,7 +25,8 @@ class SOFUsersListPageBloc
       emit(SOFUsersListPageLoadedState(users: users, page: event.page));
     } else {
       // failure
-      emit(SOFUsersListPageErrorState(failure: response.left));
+      emit(SOFUsersListPageErrorState(
+          failure: response.left, currentPage: event.page));
     }
   }
 }

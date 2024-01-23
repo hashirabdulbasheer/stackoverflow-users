@@ -31,8 +31,10 @@ class SOFUsersListPageLoadedState extends SOFUsersListPageState
 /// Error
 class SOFUsersListPageErrorState extends SOFUsersListPageState {
   final Failure failure;
+  final int currentPage;
 
-  SOFUsersListPageErrorState({required this.failure});
+  SOFUsersListPageErrorState(
+      {required this.failure, required this.currentPage});
 
-  List<Object> get props => [failure];
+  List<Object> get props => [failure, currentPage];
 }
