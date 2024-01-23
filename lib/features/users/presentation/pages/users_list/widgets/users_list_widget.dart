@@ -42,8 +42,10 @@ class SOFUsersListWidget extends StatelessWidget {
               itemBuilder: (context, item, index) => ListTile(
                 title: SOFUsersListItemWidget(user: users[index]),
                 trailing: IconButton(
-                  icon: const Icon(
-                    Icons.star_border_rounded,
+                  icon: Icon(
+                    users[index].isBookmarked
+                        ? Icons.star_rounded
+                        : Icons.star_border_rounded,
                     size: 40,
                     color: Colors.black54,
                   ),
