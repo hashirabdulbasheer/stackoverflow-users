@@ -22,5 +22,11 @@
     "change" : "Change",
     "created_at" : "Created At",
     "post_id" : "Post ID"
+  },
+  "user" : {
+    "name" : "Name",
+    "location" : "Location",
+    "age" : "Age",
+    "reputation" : "Reputation"
   }
 }

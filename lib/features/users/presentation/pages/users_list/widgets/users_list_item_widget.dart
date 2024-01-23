@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../domain/entities/user.dart';
@@ -49,10 +50,11 @@ class SOFUsersListItemWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Name: ${user.name}"),
-              Text("Location: ${user.location}"),
-              if (user.age != null) Text("Age: ${user.age.toString()}"),
-              Text("Reputation: ${user.reputation.toString()}")
+              Text('${"user.name".tr()}: ${user.name}'),
+              Text("${"user.location".tr()}: ${user.location}"),
+              if (user.age != null)
+                Text("${"user.age".tr()}: ${user.age.toString()}"),
+              Text("${"user.reputation".tr()}: ${user.reputation.toString()}")
             ],
           ),
         ),
