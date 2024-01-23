@@ -89,6 +89,9 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   // Users
   List<SOFUser> _mapUsersResponse(
       String response, List<SOFUserDto>? bookmarks) {
+    if(jsonDecode(response)['items'] == null) {
+      return [];
+    }
     var usersList = jsonDecode(response)['items'] as List;
     if (usersList.isNotEmpty) {
       return usersList
