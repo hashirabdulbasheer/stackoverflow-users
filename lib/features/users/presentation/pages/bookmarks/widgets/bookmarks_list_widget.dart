@@ -42,6 +42,10 @@ class SOFBookmarksListWidget extends StatelessWidget {
                         size: 40, color: Colors.black54),
                     onPressed: () => _onDeleteTapped(context, users[index]),
                   ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/reputations',
+                        arguments: users[index].id);
+                  },
                 );
               },
               separatorBuilder: (context, index) {
