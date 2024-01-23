@@ -7,7 +7,6 @@ import '../features/users/data/datasources/users_network_datasource_test.mocks.d
 
 /// Shared utility methods that can be accessed across test cases
 
-@GenerateMocks([http.Client])
 class TestUtils {
   static MockClient makeUsersClient({required http.Response response}) {
     final headersToPass = <String, String>{};

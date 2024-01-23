@@ -11,18 +11,18 @@ import 'package:stackoverflow_users/features/users/domain/repositories/users_rep
 
 import '../../../../utils/test_utils.dart';
 
-void main() {
-  SOFUsersRepository makeRepository(http.Client client) {
-    SOFUsersNetworkDataSource networkDataSource =
-        SOFUsersNetworkDataSourceImpl(client: client);
-    SOFUsersLocalDataSource localDataSource = MockLocalDataSource();
-    SOFUsersBookmarkDataSource bookmarksDataSource = MockBookmarksDataSource();
-    return SOFUsersRepositoryImpl(
-        networkDataSource: networkDataSource,
-        localDataSource: localDataSource,
-        bookmarkDataSource: bookmarksDataSource);
-  }
+SOFUsersRepository makeRepository(http.Client client) {
+  SOFUsersNetworkDataSource networkDataSource =
+      SOFUsersNetworkDataSourceImpl(client: client);
+  SOFUsersLocalDataSource localDataSource = MockLocalDataSource();
+  SOFUsersBookmarkDataSource bookmarksDataSource = MockBookmarksDataSource();
+  return SOFUsersRepositoryImpl(
+      networkDataSource: networkDataSource,
+      localDataSource: localDataSource,
+      bookmarkDataSource: bookmarksDataSource);
+}
 
+void main() {
   /// Users list fetching
   group("Users list fetching", () {
     test(

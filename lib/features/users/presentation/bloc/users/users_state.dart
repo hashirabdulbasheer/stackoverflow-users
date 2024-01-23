@@ -6,7 +6,10 @@ import '../../../domain/entities/user.dart';
 abstract class SOFUsersListPageState {}
 
 /// Loading
-class SOFUsersListPageLoadingState extends SOFUsersListPageState {}
+class SOFUsersListPageLoadingState extends SOFUsersListPageState  with EquatableMixin  {
+  @override
+  List<Object?> get props => [];
+}
 
 /// Loaded
 class SOFUsersListPageLoadedState extends SOFUsersListPageState
