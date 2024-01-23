@@ -60,9 +60,7 @@ class SOFAppRoutes {
                                 fetchBookmarksUseCase:
                                     sl<SOFFetchBookmarksUseCase>(),
                                 deleteBookmarksUseCase:
-                                    sl<SOFDeleteBookmarksUseCase>(),
-                                saveBookmarksUseCase:
-                                    sl<SOFSaveBookmarksUseCase>())
+                                    sl<SOFDeleteBookmarksUseCase>())
                               ..add(SOFLoadBookmarksListPageEvent()))
                   ],
                   child: const SOFBookmarksDisplayPage(),

@@ -3,6 +3,7 @@ import 'package:stackoverflow_users/features/users/data/datasources/local/user_d
 import 'package:stackoverflow_users/features/users/domain/repositories/bookmarks_repository.dart';
 
 import '../../../../core/db/hive_manager.dart';
+import '../../../../core/misc/logger.dart';
 import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
 import '../datasources/network/users_network_datasource.dart';
@@ -29,7 +30,7 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
 
       return Right(_mapUsersDtoToUsers(bookmarkedUsers));
     } catch (error) {
-      print(error.toString());
+      SOFLogger.e(error);
     }
 
     return Left(getDefaultFailure());
@@ -43,7 +44,7 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
 
       return const Right(true);
     } catch (error) {
-      print(error.toString());
+      SOFLogger.e(error);
     }
 
     return Left(getDefaultFailure());
@@ -56,7 +57,7 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
 
       return const Right(true);
     } catch (error) {
-      print(error.toString());
+      SOFLogger.e(error);
     }
 
     return Left(getDefaultFailure());

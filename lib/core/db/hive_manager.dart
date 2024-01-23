@@ -35,6 +35,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future putUpdate<T>(String key, T item) async {
     try {
       await box.put(key, item);
+      await box.flush();
     } catch (_) {
       rethrow;
     }
@@ -44,7 +45,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future putAtIndex<T>(int index, T item) async {
     try {
       await box.putAt(index, item);
-      return;
+      await box.flush();
     } catch (_) {
       rethrow;
     }
@@ -54,6 +55,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future delete(String key) async {
     try {
       await box.delete(key);
+      await box.flush();
     } catch (_) {
       rethrow;
     }
@@ -63,6 +65,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future deleteAll(List<String> keys) async {
     try {
       await box.deleteAll(keys);
+      await box.flush();
     } catch (_) {
       rethrow;
     }
@@ -72,6 +75,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future deleteAtIndex(int index) async {
     try {
       await box.deleteAt(index);
+      await box.flush();
     } catch (_) {
       rethrow;
     }
@@ -109,6 +113,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future addUpdate<T>(T item) async {
     try {
       await box.add(item);
+      await box.flush();
     } catch (_) {
       rethrow;
     }
@@ -118,6 +123,7 @@ class SOFDatabaseImpl extends SOFDatabase {
   Future clearTheBox() async {
     try {
       await box.clear();
+      await box.flush();
     } catch (_) {
       rethrow;
     }

@@ -4,18 +4,15 @@ import '../../../../../core/base_classes/base_usecase.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/usecases/delete_bookmarks_usecase.dart';
 import '../../../domain/usecases/fetch_bookmarks_usecase.dart';
-import '../../../domain/usecases/save_bookmarks_usecase.dart';
 import 'bookmarks.dart';
 
 class SOFBookmarksListPageBloc
     extends Bloc<SOFBookmarkListPageEvent, SOFBookmarksListPageState> {
   final SOFFetchBookmarksUseCase fetchBookmarksUseCase;
-  final SOFSaveBookmarksUseCase saveBookmarksUseCase;
   final SOFDeleteBookmarksUseCase deleteBookmarksUseCase;
 
   SOFBookmarksListPageBloc({
     required this.fetchBookmarksUseCase,
-    required this.saveBookmarksUseCase,
     required this.deleteBookmarksUseCase,
   }) : super(SOFBookmarksListPageLoadingState()) {
     on<SOFLoadBookmarksListPageEvent>(
