@@ -1,4 +1,6 @@
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'user_dto.g.dart';
 
 @HiveType(typeId: 0)
 class SOFUserDto {

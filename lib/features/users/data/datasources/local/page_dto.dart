@@ -1,9 +1,11 @@
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'user_dto.dart';
 
+part 'page_dto.g.dart';
+
 @HiveType(typeId: 1)
-class SOFPage {
+class SOFPageDto {
   @HiveField(0)
   final int page;
 
@@ -13,7 +15,7 @@ class SOFPage {
   @HiveField(2)
   final int lastUpdateTimeMs;
 
-  SOFPage({
+  SOFPageDto({
     required this.page,
     required this.users,
     required this.lastUpdateTimeMs,
