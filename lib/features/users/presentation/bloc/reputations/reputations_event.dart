@@ -3,7 +3,16 @@ import 'package:equatable/equatable.dart';
 abstract class SOFReputationsListPageEvent {}
 
 class SOFInitializeReputationsListPageEvent
-    extends SOFReputationsListPageEvent {}
+    extends SOFReputationsListPageEvent {
+  final int userId;
+
+  SOFInitializeReputationsListPageEvent({required this.userId});
+
+  @override
+  List<Object?> get props => [
+        userId,
+      ];
+}
 
 class SOFReputationsListPageLoadEvent extends SOFReputationsListPageEvent
     with EquatableMixin {
