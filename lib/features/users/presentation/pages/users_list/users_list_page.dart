@@ -2,14 +2,37 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../../core/models/failures.dart';
+import '../../../domain/entities/user.dart';
 import '../../bloc/users/users.dart';
 import 'widgets/error_widget.dart';
 import 'widgets/users_list_widget.dart';
 
-class SOFUsersListPage extends StatelessWidget {
+class SOFUsersListPage extends StatefulWidget {
   const SOFUsersListPage({Key? key}) : super(key: key);
+
+  @override
+  State<SOFUsersListPage> createState() => _SOFUsersListPageState();
+}
+
+class _SOFUsersListPageState extends State<SOFUsersListPage> {
+  final PagingController<int, SOFUser> _pagingController =
+      PagingController(firstPageKey: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    _pagingController
+        .addPageRequestListener((page) => _pageControllerListener(page));
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +42,22 @@ class SOFUsersListPage extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
             if (state is SOFUsersListPageLoadingState) {
-              // Loading
+              /// Loading
               return const Center(child: CircularProgressIndicator());
             } else if (state is SOFUsersListPageErrorState) {
-              // Error - retry loading current page again
+              /// Error - retry loading current page again
               return Center(
                   child: SOFErrorWidget(
                 failure: state.failure as GeneralFailure,
-                onRetry: () => _reloadPage(
-                  context: context,
-                  page: state.currentPage,
-                ),
+                onRetry: () => _reloadPage(context, state.currentPage),
               ));
             } else if (state is SOFUsersListPageLoadedState) {
-              // Loaded state
+              /// Loaded state
+              _pagingController.value = PagingState(
+                nextPageKey: state.page + 1,
+                error: null,
+                itemList: state.users,
+              );
               return ScrollConfiguration(
                   behavior: ScrollConfiguration.of(context).copyWith(
                     physics: const BouncingScrollPhysics(),
@@ -46,8 +71,11 @@ class SOFUsersListPage extends StatelessWidget {
                       color: Colors.white,
                       backgroundColor: Colors.blue,
                       strokeWidth: 4.0,
-                      onRefresh: () => _pullRefresh(context: context, page: 1),
-                      child: SOFUsersListWidget(users: state.users)));
+                      onRefresh: () => _pullRefresh(context, 1),
+                      child: SOFUsersListWidget(
+                        users: state.users,
+                        pagingController: _pagingController,
+                      )));
             }
             // Default
             return const Center(
@@ -56,13 +84,25 @@ class SOFUsersListPage extends StatelessWidget {
     );
   }
 
-  Future<void> _pullRefresh(
-      {required BuildContext context, required int page}) async {
-    await Future.delayed(const Duration(seconds: 1));
-    _reloadPage(context: context, page: page);
+  void _pageControllerListener(int page) {
+    // load next page
+    SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
+    if (bloc.state is SOFUsersListPageLoadedState) {
+      SOFUsersListPageLoadedState state =
+          bloc.state as SOFUsersListPageLoadedState;
+      if (!state.isLoading) {
+        // loading complete
+        bloc.add(SOFUsersListPageLoadEvent(page: page));
+      }
+    }
   }
 
-  void _reloadPage({required BuildContext context, required int page}) {
+  Future<void> _pullRefresh(BuildContext context, int page) async {
+    await Future.delayed(const Duration(seconds: 1));
+    _reloadPage(context, page);
+  }
+
+  void _reloadPage(BuildContext context, int page) {
     SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
     bloc.add(SOFUsersListPageLoadEvent(page: page));
   }

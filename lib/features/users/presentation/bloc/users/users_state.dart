@@ -13,19 +13,24 @@ class SOFUsersListPageLoadedState extends SOFUsersListPageState
     with EquatableMixin {
   final List<SOFUser> users;
   final int page;
+  final bool isLoading;
 
-  SOFUsersListPageLoadedState({required this.users, required this.page});
+  SOFUsersListPageLoadedState(
+      {required this.users, required this.page, required this.isLoading});
 
   SOFUsersListPageLoadedState copyWith({
     List<SOFUser>? users,
     int? page,
+    bool? isLoading,
   }) {
     return SOFUsersListPageLoadedState(
-        users: users ?? this.users, page: page ?? this.page);
+        users: users ?? this.users,
+        page: page ?? this.page,
+        isLoading: isLoading ?? this.isLoading);
   }
 
   @override
-  List<Object?> get props => [users, page];
+  List<Object?> get props => [users, page, isLoading];
 }
 
 /// Error

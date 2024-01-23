@@ -17,7 +17,7 @@ class SOFAppRoutes {
                     BlocProvider<SOFUsersListPageBloc>(
                         create: (BuildContext context) => SOFUsersListPageBloc(
                             fetchUsersUseCase: sl<SOFFetchUsersUseCase>())
-                          ..add(SOFUsersListPageLoadEvent(page: 1)))
+                          ..add(SOFInitializeUserListPageEvent()))
                   ],
                   child: const SOFUsersListPage(),
                 ));

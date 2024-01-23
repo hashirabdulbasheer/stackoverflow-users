@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import '../../../../core/base_classes/base_network_datasource.dart';
 import '../../../../core/configs/network_config.dart';
 import '../../../../core/entities/enums/exception_type_enum.dart';
-import '../../../../core/entities/sof_response.dart';
 import '../../../../core/entities/exceptions.dart';
+import '../../../../core/entities/sof_response.dart';
 
 abstract class SOFUsersNetworkDataSource extends SOFBaseNetworkDataSource {
   /// Fetch users
