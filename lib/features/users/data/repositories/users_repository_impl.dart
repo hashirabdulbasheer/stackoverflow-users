@@ -62,9 +62,18 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
 
   @override
   Future<Either<Failure, List<SOFReputation>>> fetchReputations(
-      {required int userId, required int page}) {
-    // TODO: implement fetchReputations
-    throw UnimplementedError();
+      {required int userId, required int page}) async {
+    try {
+      SOFResponse response =
+          await networkDataSource.fetchReputation(userId: userId, page: page);
+      if (response.isSuccessful && response.body?.isNotEmpty == true) {
+
+      }
+    } on ServerException catch (error) {
+      return Left(getFailure(error));
+    } catch (_) {}
+
+    return Left(getDefaultFailure());
   }
 
   ///
