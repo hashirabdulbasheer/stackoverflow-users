@@ -6,8 +6,8 @@ import 'package:either_dart/either.dart';
 import '../../../../core/db/hive_manager.dart';
 import '../../../../core/entities/exceptions.dart';
 import '../../../../core/entities/sof_response.dart';
+import '../../../../core/misc/logger.dart';
 import '../../../../core/models/failures.dart';
-import '../../../../main.dart';
 import '../../domain/entities/reputation.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
@@ -39,7 +39,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       SOFPageDto? pageDto = localDataSource.get(page.toString());
       if (pageDto != null && pageDto.users.isNotEmpty) {
         // include cache policy checks
-        logger.d("DB: Page $page");
+        SOFLogger.d("DB: Page $page");
         return Right(_mapPageDtoToUsers(pageDto, bookmarkedUsers));
       }
 
@@ -58,7 +58,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
     } on ServerException catch (error) {
       return Left(getFailure(error));
     } catch (error) {
-      logger.e(error);
+      SOFLogger.e(error);
     }
 
     return Left(getDefaultFailure());
@@ -76,7 +76,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
     } on ServerException catch (error) {
       return Left(getFailure(error));
     } catch (error) {
-      logger.e(error);
+      SOFLogger.e(error);
     }
 
     return Left(getDefaultFailure());

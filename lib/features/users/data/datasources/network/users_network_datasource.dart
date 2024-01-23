@@ -5,7 +5,7 @@ import '../../../../../core/configs/network_config.dart';
 import '../../../../../core/entities/enums/exception_type_enum.dart';
 import '../../../../../core/entities/exceptions.dart';
 import '../../../../../core/entities/sof_response.dart';
-import '../../../../../main.dart';
+import '../../../../../core/misc/logger.dart';
 
 abstract class SOFUsersNetworkDataSource extends SOFBaseNetworkDataSource {
   /// Fetch users
@@ -35,7 +35,7 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
     var finalUrl = Uri.https(SOFNetworkConfig.usersBaseUrl,
         "/${SOFNetworkConfig.apiVersion}/users", queryParameters);
 
-    logger.d("API: $finalUrl");
+    SOFLogger.d("API: $finalUrl");
 
     final headersToPass = <String, String>{};
     headersToPass.addAll(<String, String>{
@@ -44,6 +44,8 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
     });
 
     http.Response response = await client.get(finalUrl, headers: headersToPass);
+
+    SOFLogger.d("API RESPONSE: ${response.statusCode}");
 
     // Responses
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -70,7 +72,7 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
         "/${SOFNetworkConfig.apiVersion}/users/$userId/reputation-history",
         queryParameters);
 
-    logger.d("API: $finalUrl");
+    SOFLogger.d("API: $finalUrl");
 
     final headersToPass = <String, String>{};
     headersToPass.addAll(<String, String>{
@@ -79,6 +81,8 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
     });
 
     http.Response response = await client.get(finalUrl, headers: headersToPass);
+
+    SOFLogger.d("API RESPONSE: ${response.statusCode}");
 
     // Responses
     if (response.statusCode == 201 || response.statusCode == 200) {

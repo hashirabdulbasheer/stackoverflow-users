@@ -8,7 +8,6 @@ import 'core/misc/app_routes.dart';
 import 'core/misc/di_container.dart';
 import 'core/db/hive_utils.dart';
 
-var logger = Logger();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
