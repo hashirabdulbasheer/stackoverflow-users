@@ -38,8 +38,11 @@ class SOFReputationsListWidget extends StatelessWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             builderDelegate: PagedChildBuilderDelegate<SOFReputation>(
               itemBuilder: (context, reputation, index) {
-                return ListTile(
-                  title: SOFReputationsListItemWidget(reputation: reputation),
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: ListTile(
+                    title: SOFReputationsListItemWidget(reputation: reputation),
+                  ),
                 );
               },
             ),

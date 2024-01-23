@@ -5,6 +5,7 @@ import '../../../../../core/configs/network_config.dart';
 import '../../../../../core/entities/enums/exception_type_enum.dart';
 import '../../../../../core/entities/exceptions.dart';
 import '../../../../../core/entities/sof_response.dart';
+import '../../../../../main.dart';
 
 abstract class SOFUsersNetworkDataSource extends SOFBaseNetworkDataSource {
   /// Fetch users
@@ -33,6 +34,8 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
 
     var finalUrl = Uri.https(SOFNetworkConfig.usersBaseUrl,
         "/${SOFNetworkConfig.apiVersion}/users", queryParameters);
+
+    logger.d("API: $finalUrl");
 
     final headersToPass = <String, String>{};
     headersToPass.addAll(<String, String>{
@@ -66,6 +69,8 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
         SOFNetworkConfig.usersBaseUrl,
         "/${SOFNetworkConfig.apiVersion}/users/$userId/reputation-history",
         queryParameters);
+
+    logger.d("API: $finalUrl");
 
     final headersToPass = <String, String>{};
     headersToPass.addAll(<String, String>{
