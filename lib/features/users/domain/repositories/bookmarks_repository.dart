@@ -7,4 +7,5 @@ import '../entities/user.dart';
 abstract class SOFBookmarksRepository extends SOFBaseRepository {
   Either<Failure, List<SOFUser>> fetchBookmarks();
   Either<Failure, bool> saveBookmark(SOFUser user);
+  Either<Failure, bool> deleteBookmark(SOFUser user);
 }

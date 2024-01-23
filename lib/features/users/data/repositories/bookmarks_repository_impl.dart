@@ -49,6 +49,19 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
     return Left(getDefaultFailure());
   }
 
+  @override
+  Either<Failure, bool> deleteBookmark(SOFUser user) {
+    try {
+      bookmarkDataSource.delete(user.id.toString());
+
+      return const Right(true);
+    } catch (error) {
+      print(error.toString());
+    }
+
+    return Left(getDefaultFailure());
+  }
+
   ///
   /// Mappers
   ///
