@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,13 +33,33 @@ class SOFUsersListPage extends StatelessWidget {
               ));
             } else if (state is SOFUsersListPageLoadedState) {
               // Loaded state
-              return SOFUsersListWidget(users: state.users);
+              return ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(
+                    physics: const BouncingScrollPhysics(),
+                    dragDevices: {
+                      PointerDeviceKind.touch,
+                      PointerDeviceKind.mouse,
+                      PointerDeviceKind.trackpad
+                    },
+                  ),
+                  child: RefreshIndicator(
+                      color: Colors.white,
+                      backgroundColor: Colors.blue,
+                      strokeWidth: 4.0,
+                      onRefresh: () => _pullRefresh(context: context, page: 1),
+                      child: SOFUsersListWidget(users: state.users)));
             }
             // Default
             return const Center(
                 child: CircularProgressIndicator(color: Colors.green));
           }),
     );
+  }
+
+  Future<void> _pullRefresh(
+      {required BuildContext context, required int page}) async {
+    await Future.delayed(const Duration(seconds: 1));
+    _reloadPage(context: context, page: page);
   }
 
   void _reloadPage({required BuildContext context, required int page}) {
