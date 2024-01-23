@@ -67,7 +67,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       SOFResponse response =
           await networkDataSource.fetchReputation(userId: userId, page: page);
       if (response.isSuccessful && response.body?.isNotEmpty == true) {
-
+        return Right(_mapReputationsResponse(response.body ?? ""));
       }
     } on ServerException catch (error) {
       return Left(getFailure(error));
@@ -79,6 +79,8 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   ///
   /// Mappers
   ///
+
+  // Users
   List<SOFUser> _mapUsersResponse(
       String response, List<SOFUserDto>? bookmarks) {
     var usersList = jsonDecode(response)['items'] as List;
@@ -140,5 +142,21 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
     } catch (_) {}
 
     return false;
+  }
+
+  // Reputation
+  List<SOFReputation> _mapReputationsResponse(String response) {
+    var reputationsList = jsonDecode(response)['items'] as List;
+    if (reputationsList.isNotEmpty) {
+      return reputationsList
+          .map((e) => SOFReputation(
+                type: e["reputation_history_type"],
+                change: e["reputation_change"],
+                createdAt: e["creation_date"],
+                postId: e["post_id"],
+              ))
+          .toList();
+    }
+    return [];
   }
 }
