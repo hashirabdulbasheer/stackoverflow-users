@@ -5,5 +5,6 @@ import '../../../../core/models/failures.dart';
 import '../entities/user.dart';
 
 abstract class SOFBookmarksRepository extends SOFBaseRepository {
-  Future<Either<Failure, List<SOFUser>>> fetchBookmarks();
+  Either<Failure, List<SOFUser>> fetchBookmarks();
+  Either<Failure, bool> saveBookmark(SOFUser user);
 }

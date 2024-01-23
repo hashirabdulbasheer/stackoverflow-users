@@ -20,7 +20,7 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
   });
 
   @override
-  Future<Either<Failure, List<SOFUser>>> fetchBookmarks() async {
+  Either<Failure, List<SOFUser>> fetchBookmarks() {
     try {
       List<SOFUserDto>? bookmarkedUsers = bookmarkDataSource.getAll();
       if (bookmarkedUsers == null) {
@@ -28,6 +28,20 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
       }
 
       return Right(_mapUsersDtoToUsers(bookmarkedUsers));
+    } catch (error) {
+      print(error.toString());
+    }
+
+    return Left(getDefaultFailure());
+  }
+
+  @override
+  Either<Failure, bool> saveBookmark(SOFUser user) {
+    try {
+      SOFUserDto userDto = _mapUserToUserDto(user);
+      bookmarkDataSource.putUpdate(user.id.toString(), userDto);
+
+      return const Right(true);
     } catch (error) {
       print(error.toString());
     }
@@ -52,5 +66,15 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
           .toList();
     }
     return [];
+  }
+
+  SOFUserDto _mapUserToUserDto(SOFUser user) {
+    return SOFUserDto(
+        id: user.id,
+        name: user.name,
+        avatar: user.avatar.toString(),
+        location: user.location,
+        reputation: user.reputation,
+        age: user.age);
   }
 }

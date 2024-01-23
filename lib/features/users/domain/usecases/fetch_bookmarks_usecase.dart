@@ -13,6 +13,6 @@ class SOFFetchBookmarksUseCase
 
   @override
   Future<Either<Failure, List<SOFUser>>> call(NoParams params) {
-    return repository.fetchBookmarks();
+    return Future.value(repository.fetchBookmarks());
   }
 }
