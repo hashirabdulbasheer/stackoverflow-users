@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:stackoverflow_users/core/misc/logger.dart';
 
 import '../../../../../core/models/failures.dart';
 import '../../../domain/entities/user.dart';
@@ -90,6 +91,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
       if (!state.isLoading) {
         // loading complete
         bloc.add(SOFUsersListPageLoadEvent(page: page));
+        SOFLogger.d("Loading Page $page");
       }
     }
   }

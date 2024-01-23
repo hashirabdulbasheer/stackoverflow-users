@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../../../../core/misc/logger.dart';
 import '../../../../../core/models/failures.dart';
 import '../../../domain/entities/reputation.dart';
 import '../../bloc/reputations/reputations.dart';
@@ -85,6 +86,7 @@ class _SOFReputationsListPageState extends State<SOFReputationsListPage> {
           page: page,
           userId: state.userId,
         ));
+        SOFLogger.d("Loading Page $page");
       }
     }
   }
