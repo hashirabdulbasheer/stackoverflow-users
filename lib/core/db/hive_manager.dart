@@ -130,3 +130,7 @@ class SOFDatabaseImpl extends SOFDatabase {
 class SOFUsersLocalDataSource extends SOFDatabaseImpl {
   SOFUsersLocalDataSource() : super('sof_pages_box');
 }
+
+class SOFUsersBookmarkDataSource extends SOFDatabaseImpl {
+  SOFUsersBookmarkDataSource() : super('sof_bookmarks_box');
+}

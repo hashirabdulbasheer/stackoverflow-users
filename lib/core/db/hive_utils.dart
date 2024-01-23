@@ -7,6 +7,7 @@ import '../../features/users/data/datasources/local/user_dto.dart';
 class SOFHiveBoxes {
   static Future<void> open() async {
     await Hive.openBox('sof_pages_box');
+    await Hive.openBox('sof_bookmarks_box');
   }
 }
 
