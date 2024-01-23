@@ -122,7 +122,6 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       SOFUserDto? user =
           bookmarks?.firstWhere((element) => element.id == userId);
       if (user != null) {
-        print("Found ${user.name}");
         return true;
       }
     } catch (_) {}

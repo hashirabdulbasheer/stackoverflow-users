@@ -7,13 +7,11 @@ import '../../../../domain/entities/user.dart';
 import 'users_list_item_widget.dart';
 
 class SOFUsersListWidget extends StatelessWidget {
-  final List<SOFUser> users;
   final PagingController<int, SOFUser> pagingController;
   final Function(SOFUser) onBookmarkTapped;
 
   const SOFUsersListWidget({
     Key? key,
-    required this.users,
     required this.pagingController,
     required this.onBookmarkTapped,
   }) : super(key: key);
@@ -41,21 +39,21 @@ class SOFUsersListWidget extends StatelessWidget {
             pagingController: pagingController,
             physics: const AlwaysScrollableScrollPhysics(),
             builderDelegate: PagedChildBuilderDelegate<SOFUser>(
-              itemBuilder: (context, item, index) => ListTile(
-                title: SOFUsersListItemWidget(user: users[index]),
-                trailing: IconButton(
-                  icon: Icon(
-                    users[index].isBookmarked
-                        ? Icons.star_rounded
-                        : Icons.star_border_rounded,
-                    size: 40,
-                    color: users[index].isBookmarked
-                        ? Colors.green
-                        : Colors.black54,
+              itemBuilder: (context, user, index) {
+                return ListTile(
+                  title: SOFUsersListItemWidget(user: user),
+                  trailing: IconButton(
+                    icon: Icon(
+                      user.isBookmarked
+                          ? Icons.star_rounded
+                          : Icons.star_border_rounded,
+                      size: 40,
+                      color: user.isBookmarked ? Colors.green : Colors.black54,
+                    ),
+                    onPressed: () => onBookmarkTapped(user),
                   ),
-                  onPressed: () => onBookmarkTapped(users[index]),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ));

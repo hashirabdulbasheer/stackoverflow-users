@@ -29,7 +29,7 @@ class SOFUsersListPageBloc
         (event, emit) => _onSaveBookmarkEvent(event, emit));
 
     on<SOFRemoveBookmarkEvent>(
-            (event, emit) => _onRemoveBookmarkEvent(event, emit));
+        (event, emit) => _onRemoveBookmarkEvent(event, emit));
   }
 
   ///
@@ -58,17 +58,14 @@ class SOFUsersListPageBloc
 
   void _onPageLoadEvent(event, emit) async {
     if (state is SOFUsersListPageLoadedState) {
-      SOFUsersListPageLoadedState currentState =
-          state as SOFUsersListPageLoadedState;
-      // loading -> true
-      emit(currentState.copyWith(isLoading: true));
-
       // fetch
       final response = await _fetchUsers(event.page);
       if (response.isRight) {
         // success
+        SOFUsersListPageLoadedState currentState =
+        state as SOFUsersListPageLoadedState;
         List<SOFUser> users = response.right;
-        List<SOFUser> merged = currentState.users + users;
+        List<SOFUser> merged = _combine(currentState.users, users);
         emit(currentState.copyWith(
           users: merged,
           page: event.page,
@@ -80,9 +77,9 @@ class SOFUsersListPageBloc
 
   void _onSaveBookmarkEvent(event, emit) async {
     if (state is SOFUsersListPageLoadedState) {
+      final response = await _saveBookmark(event.user);
       SOFUsersListPageLoadedState currentState =
           state as SOFUsersListPageLoadedState;
-      final response = await _saveBookmark(event.user);
       if (response.isRight) {
         // success - load again
         add(SOFUsersListPageLoadEvent(page: currentState.page));
@@ -99,7 +96,7 @@ class SOFUsersListPageBloc
   void _onRemoveBookmarkEvent(event, emit) async {
     if (state is SOFUsersListPageLoadedState) {
       SOFUsersListPageLoadedState currentState =
-      state as SOFUsersListPageLoadedState;
+          state as SOFUsersListPageLoadedState;
       final response = await _deleteBookmark(event.user);
       if (response.isRight) {
         // success - load again
@@ -112,6 +109,18 @@ class SOFUsersListPageBloc
         ));
       }
     }
+  }
+
+  List<SOFUser> _combine(List<SOFUser> users1, List<SOFUser> users2) {
+    // Improve logic later on
+    Map<int, SOFUser> shelf = {};
+    for (SOFUser user in users1) {
+      shelf[user.id] = user;
+    }
+    for (SOFUser user in users2) {
+      shelf[user.id] = user;
+    }
+    return shelf.values.toList();
   }
 
   /// FETCH

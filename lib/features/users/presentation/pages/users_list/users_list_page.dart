@@ -7,6 +7,7 @@ import '../../../../../core/models/failures.dart';
 import '../../../domain/entities/user.dart';
 import '../../bloc/users/users.dart';
 import 'widgets/error_widget.dart';
+import 'widgets/users_list_item_widget.dart';
 import 'widgets/users_list_widget.dart';
 
 class SOFUsersListPage extends StatefulWidget {
@@ -66,8 +67,8 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
                 error: null,
                 itemList: state.users,
               );
+
               return SOFUsersListWidget(
-                users: state.users,
                 pagingController: _pagingController,
                 onBookmarkTapped: (user) => _onBookmarkTapped(user),
               );
@@ -103,5 +104,8 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
     } else {
       bloc.add(SOFSaveBookmarkEvent(user: user));
     }
+    setState(() {
+
+    });
   }
 }
