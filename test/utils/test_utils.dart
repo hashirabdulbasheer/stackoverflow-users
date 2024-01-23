@@ -25,6 +25,22 @@ class TestUtils {
     return client;
   }
 
+  static MockClient makeReputationsClient({required http.Response response}) {
+    final headersToPass = <String, String>{};
+    headersToPass.addAll(<String, String>{
+      "Accept": "application/json;charset=utf-t",
+      "Accept-Language": "en",
+    });
+    final client = MockClient();
+    when(client.get(
+        Uri.parse(
+            "https://${SOFNetworkConfig.usersBaseUrl}/${SOFNetworkConfig.apiVersion}/users/22656/reputation-history?page=1&pagesize=${SOFNetworkConfig.pageSize}&site=stackoverflow"),
+        headers: headersToPass))
+        .thenAnswer((_) async => response);
+
+    return client;
+  }
+
   static const String errorJson =
       '{"error_id": 403, "error_message": "someError", "error_name": "network_error"}';
 

@@ -16,6 +16,9 @@ import '../../../../utils/test_utils.dart';
 void main() {
   /// Testcases
 
+  ///
+  /// Users List
+  ///
   test('FetchUsers should throw Server exception in case of network errors',
       () async {
     final client = TestUtils.makeUsersClient(
@@ -75,4 +78,67 @@ void main() {
     expect(response?.isSuccessful, true);
     expect(response?.body, "body");
   });
+
+  ///
+  /// Reputations
+  ///
+  test('FetchReputations should throw Server exception in case of network errors',
+          () async {
+        final client = TestUtils.makeReputationsClient(
+            response: http.Response(TestUtils.errorJson, 403));
+        SOFUsersNetworkDataSource sut =
+        SOFUsersNetworkDataSourceImpl(client: client);
+
+        SOFResponse? response;
+        try {
+          response = await sut.fetchReputation(userId: 22656, page: 1);
+        } catch (error) {
+          expect(error is ServerException, true);
+          expect((error as ServerException).type, SOFExceptionType.network);
+        }
+
+        expect(response == null, true);
+      });
+
+  test(
+      'FetchReputations should return success response in case api returns status code 200',
+          () async {
+        final client =
+        TestUtils.makeReputationsClient(response: http.Response("body", 200));
+        SOFUsersNetworkDataSource sut =
+        SOFUsersNetworkDataSourceImpl(client: client);
+
+        SOFResponse? response;
+        Exception? exception;
+        try {
+          response = await sut.fetchReputation(userId: 22656, page: 1);
+        } on Exception catch (error) {
+          exception = error;
+        }
+
+        expect(exception == null, true);
+        expect(response?.isSuccessful, true);
+        expect(response?.body, "body");
+      });
+
+  test(
+      'FetchReputations should return success response in case api returns status code 201',
+          () async {
+        final client =
+        TestUtils.makeReputationsClient(response: http.Response("body", 201));
+        SOFUsersNetworkDataSource sut =
+        SOFUsersNetworkDataSourceImpl(client: client);
+
+        SOFResponse? response;
+        Exception? exception;
+        try {
+          response = await sut.fetchReputation(userId: 22656, page: 1);
+        } on Exception catch (error) {
+          exception = error;
+        }
+
+        expect(exception == null, true);
+        expect(response?.isSuccessful, true);
+        expect(response?.body, "body");
+      });
 }
