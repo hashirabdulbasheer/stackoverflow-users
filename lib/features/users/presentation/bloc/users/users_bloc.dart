@@ -2,8 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/user.dart';
 import '../../../domain/usecases/fetch_users_usecase.dart';
-import 'users_event.dart';
-import 'users_state.dart';
+import 'users.dart';
 
 class SOFUsersListPageBloc
     extends Bloc<SOFUsersListPageEvent, SOFUsersListPageState> {
