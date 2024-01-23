@@ -38,6 +38,7 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text("user.title".tr()),
         actions: [
           TextButton(
             onPressed: () {
