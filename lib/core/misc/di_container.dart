@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:stackoverflow_users/features/users/domain/usecases/delete_bookmarks_usecase.dart';
+import 'package:stackoverflow_users/features/users/domain/usecases/fetch_reputations_usecase.dart';
 
 import '../../features/users/data/datasources/network/users_network_datasource.dart';
 import '../../features/users/data/repositories/bookmarks_repository_impl.dart';
@@ -40,6 +41,8 @@ class SOFDiContainer {
         () => SOFSaveBookmarksUseCase(repository: sl()));
     sl.registerFactory<SOFDeleteBookmarksUseCase>(
         () => SOFDeleteBookmarksUseCase(repository: sl()));
+    sl.registerFactory<SOFFetchReputationsUseCase>(
+        () => SOFFetchReputationsUseCase(repository: sl()));
 
     /// Hive db
     sl.registerLazySingleton<SOFUsersLocalDataSource>(

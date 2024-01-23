@@ -4,11 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/users/domain/usecases/delete_bookmarks_usecase.dart';
 import '../../features/users/domain/usecases/fetch_bookmarks_usecase.dart';
+import '../../features/users/domain/usecases/fetch_reputations_usecase.dart';
 import '../../features/users/domain/usecases/fetch_users_usecase.dart';
 import '../../features/users/domain/usecases/save_bookmarks_usecase.dart';
 import '../../features/users/presentation/bloc/bookmarks/bookmarks.dart';
+import '../../features/users/presentation/bloc/reputations/reputations.dart';
 import '../../features/users/presentation/bloc/users/users.dart';
 import '../../features/users/presentation/pages/bookmarks/bookmarks_list_page.dart';
+import '../../features/users/presentation/pages/reputations/reputations_list_page.dart';
 import '../../features/users/presentation/pages/users_list/users_list_page.dart';
 import 'di_container.dart';
 
@@ -32,7 +35,20 @@ class SOFAppRoutes {
                 ));
 
       case '/reputations':
-        return MaterialPageRoute(builder: (_) => Container());
+        int userId = settings.arguments as int;
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<SOFReputationsListPageBloc>(
+                        create: (BuildContext context) =>
+                            SOFReputationsListPageBloc(
+                                fetchReputationsUseCase:
+                                    sl<SOFFetchReputationsUseCase>())
+                              ..add(SOFInitializeReputationsListPageEvent(
+                                  userId: userId)))
+                  ],
+                  child: const SOFReputationsListPage(),
+                ));
 
       case '/bookmarks':
         return MaterialPageRoute(

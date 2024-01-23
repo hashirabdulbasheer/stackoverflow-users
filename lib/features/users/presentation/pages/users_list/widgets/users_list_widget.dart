@@ -52,6 +52,10 @@ class SOFUsersListWidget extends StatelessWidget {
                     ),
                     onPressed: () => onBookmarkTapped(user),
                   ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/reputations',
+                        arguments: user.id);
+                  },
                 );
               },
             ),
