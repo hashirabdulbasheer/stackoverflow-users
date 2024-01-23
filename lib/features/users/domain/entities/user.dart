@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 class SOFUser extends Equatable {
   final int id;
   final String name;
-  final Uri avatar;
+  final String avatar;
   final String location;
   final int? age;
   final int reputation;
@@ -20,7 +20,7 @@ class SOFUser extends Equatable {
   SOFUser copyWith(
       {int? id,
       String? name,
-      Uri? avatar,
+      String? avatar,
       String? location,
       int? age,
       int? reputation}) {

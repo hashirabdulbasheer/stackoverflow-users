@@ -72,7 +72,7 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
           .map((e) => SOFUser(
               id: e.id,
               name: e.name,
-              avatar: Uri.parse(e.avatar),
+              avatar: e.avatar,
               location: e.location,
               reputation: e.reputation,
               age: e.age))
@@ -85,7 +85,7 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
     return SOFUserDto(
         id: user.id,
         name: user.name,
-        avatar: user.avatar.toString(),
+        avatar: user.avatar,
         location: user.location,
         reputation: user.reputation,
         age: user.age);

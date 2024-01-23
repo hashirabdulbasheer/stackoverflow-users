@@ -47,11 +47,13 @@ class SOFUsersListWidget extends StatelessWidget {
                     size: 40,
                     color: Colors.black54,
                   ),
-                  onPressed: () {},
+                  onPressed: () => _onBookmarkTapped(users[index]),
                 ),
               ),
             ),
           ),
         ));
   }
+
+  void _onBookmarkTapped(SOFUser user) {}
 }

@@ -66,7 +66,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
           .map((e) => SOFUser(
               id: e["user_id"],
               name: e["display_name"],
-              avatar: Uri.parse(e["profile_image"]),
+              avatar: e["profile_image"],
               location: e["location"] ?? "error.location_unavailable".tr(),
               reputation: e["reputation"],
               age: e["age"]))
@@ -82,7 +82,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
           .map((e) => SOFUser(
               id: e.id,
               name: e.name,
-              avatar: Uri.parse(e.avatar),
+              avatar: e.avatar,
               location: e.location,
               reputation: e.reputation,
               age: e.age))
@@ -98,7 +98,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
             .map((e) => SOFUserDto(
                 id: e.id,
                 name: e.name,
-                avatar: e.avatar.toString(),
+                avatar: e.avatar,
                 location: e.location,
                 reputation: e.reputation,
                 age: e.age))

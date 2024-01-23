@@ -16,7 +16,7 @@ class SOFUsersListItemWidget extends StatelessWidget {
           height: 80,
           width: 100,
           child: Image.network(
-            user.avatar.toString(),
+            user.avatar,
             fit: BoxFit.fitHeight,
             errorBuilder: (context, object, stacktrace) {
               return const Center(
