@@ -34,12 +34,10 @@ class SOFBookmarksDisplayPage extends StatelessWidget {
               if (state.users.isEmpty) {
                 return Center(child: Text("error.no_bookmark".tr()));
               }
-              return RefreshIndicator(
-                  color: Colors.white,
-                  backgroundColor: Colors.blue,
-                  strokeWidth: 4.0,
-                  onRefresh: () => _pullRefresh(context),
-                  child: SOFBookmarksListWidget(users: state.users));
+              return SOFBookmarksListWidget(
+                users: state.users,
+                onRefresh: () => _pullRefresh(context),
+              );
             }
             // Default
             return const Center(
