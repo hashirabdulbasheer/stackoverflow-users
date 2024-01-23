@@ -98,8 +98,8 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
 
   void _onBookmarkTapped(SOFUser user) {
     SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
-    if(user.isBookmarked) {
-
+    if (user.isBookmarked) {
+      bloc.add(SOFRemoveBookmarkEvent(user: user));
     } else {
       bloc.add(SOFSaveBookmarkEvent(user: user));
     }

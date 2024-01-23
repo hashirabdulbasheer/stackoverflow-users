@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/user.dart';
+import '../../../domain/usecases/delete_bookmarks_usecase.dart';
 import '../../../domain/usecases/fetch_users_usecase.dart';
 import '../../../domain/usecases/save_bookmarks_usecase.dart';
 import 'users.dart';
@@ -9,10 +10,12 @@ class SOFUsersListPageBloc
     extends Bloc<SOFUsersListPageEvent, SOFUsersListPageState> {
   final SOFFetchUsersUseCase fetchUsersUseCase;
   final SOFSaveBookmarksUseCase saveBookmarksUseCase;
+  final SOFDeleteBookmarksUseCase deleteBookmarksUseCase;
 
   SOFUsersListPageBloc({
     required this.fetchUsersUseCase,
     required this.saveBookmarksUseCase,
+    required this.deleteBookmarksUseCase,
   }) : super(SOFUsersListPageLoadingState()) {
     // Init
     on<SOFInitializeUserListPageEvent>(
@@ -24,6 +27,9 @@ class SOFUsersListPageBloc
 
     on<SOFSaveBookmarkEvent>(
         (event, emit) => _onSaveBookmarkEvent(event, emit));
+
+    on<SOFRemoveBookmarkEvent>(
+            (event, emit) => _onRemoveBookmarkEvent(event, emit));
   }
 
   ///
@@ -90,6 +96,24 @@ class SOFUsersListPageBloc
     }
   }
 
+  void _onRemoveBookmarkEvent(event, emit) async {
+    if (state is SOFUsersListPageLoadedState) {
+      SOFUsersListPageLoadedState currentState =
+      state as SOFUsersListPageLoadedState;
+      final response = await _deleteBookmark(event.user);
+      if (response.isRight) {
+        // success - load again
+        add(SOFUsersListPageLoadEvent(page: currentState.page));
+      } else {
+        // failure
+        emit(SOFUsersListPageErrorState(
+          failure: response.left,
+          currentPage: currentState.page,
+        ));
+      }
+    }
+  }
+
   /// FETCH
   Future<dynamic> _fetchUsers(int page) async {
     return await fetchUsersUseCase.call(FetchUsersListParams(page: page));
@@ -97,5 +121,9 @@ class SOFUsersListPageBloc
 
   Future<dynamic> _saveBookmark(SOFUser user) async {
     return saveBookmarksUseCase.call(SaveBookmarkParams(user: user));
+  }
+
+  Future<dynamic> _deleteBookmark(SOFUser user) async {
+    return deleteBookmarksUseCase.call(DeleteBookmarkParams(user: user));
   }
 }

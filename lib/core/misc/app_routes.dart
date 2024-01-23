@@ -24,6 +24,8 @@ class SOFAppRoutes {
                               fetchUsersUseCase: sl<SOFFetchUsersUseCase>(),
                               saveBookmarksUseCase:
                                   sl<SOFSaveBookmarksUseCase>(),
+                              deleteBookmarksUseCase:
+                                  sl<SOFDeleteBookmarksUseCase>(),
                             )..add(SOFInitializeUserListPageEvent()))
                   ],
                   child: const SOFUsersListPage(),
