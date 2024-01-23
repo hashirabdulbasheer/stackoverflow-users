@@ -49,7 +49,9 @@ class SOFUsersListWidget extends StatelessWidget {
                         ? Icons.star_rounded
                         : Icons.star_border_rounded,
                     size: 40,
-                    color: Colors.black54,
+                    color: users[index].isBookmarked
+                        ? Colors.green
+                        : Colors.black54,
                   ),
                   onPressed: () => onBookmarkTapped(users[index]),
                 ),
