@@ -15,5 +15,8 @@
   },
   "usersPage": {
     "bookmark_title": "Bookmarks"
+  },
+  "reputation": {
+    "title" : "title"
   }
 }
