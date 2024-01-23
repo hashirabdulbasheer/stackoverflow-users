@@ -6,6 +6,8 @@ abstract class SOFUsersListPageEvent {}
 
 class SOFInitializeUserListPageEvent extends SOFUsersListPageEvent {}
 
+class SOFForceLoadFromApiUserListPageEvent extends SOFUsersListPageEvent {}
+
 // Called on initial page load and when scrolled to bottom and refreshed
 class SOFUsersListPageLoadEvent extends SOFUsersListPageEvent
     with EquatableMixin {

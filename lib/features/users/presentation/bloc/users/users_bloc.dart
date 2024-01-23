@@ -30,6 +30,9 @@ class SOFUsersListPageBloc
 
     on<SOFRemoveBookmarkEvent>(
         (event, emit) => _onRemoveBookmarkEvent(event, emit));
+
+    on<SOFForceLoadFromApiUserListPageEvent>(
+        (event, emit) => _onForceLoadEvent(event, emit));
   }
 
   ///
@@ -38,7 +41,7 @@ class SOFUsersListPageBloc
 
   void _onInitializeEvent(event, emit) async {
     // fetch
-    final response = await _fetchUsers(1);
+    final response = await _fetchUsers(page: 1);
     if (response.isRight) {
       // success
       List<SOFUser> users = response.right;
@@ -64,7 +67,7 @@ class SOFUsersListPageBloc
       emit(currentState.copyWith(
         isLoading: true,
       ));
-      final response = await _fetchUsers(event.page);
+      final response = await _fetchUsers(page: event.page);
       if (response.isRight) {
         // success
         List<SOFUser> users = response.right;
@@ -114,6 +117,26 @@ class SOFUsersListPageBloc
     }
   }
 
+  void _onForceLoadEvent(event, emit) async {
+    // fetch
+    final response = await _fetchUsers(page: 1, forceApi: true);
+    if (response.isRight) {
+      // success
+      List<SOFUser> users = response.right;
+      emit(SOFUsersListPageLoadedState(
+        users: users,
+        page: 1,
+        isLoading: false,
+      ));
+    } else {
+      // failure
+      emit(SOFUsersListPageErrorState(
+        failure: response.left,
+        currentPage: 1,
+      ));
+    }
+  }
+
   // previous users will be replaced with new
   List<SOFUser> _combine(List<SOFUser> previousUsers, List<SOFUser> newUsers) {
     // Improve logic later on
@@ -128,8 +151,11 @@ class SOFUsersListPageBloc
   }
 
   /// FETCH
-  Future<dynamic> _fetchUsers(int page) async {
-    return await fetchUsersUseCase.call(FetchUsersListParams(page: page));
+  Future<dynamic> _fetchUsers({required int page, bool? forceApi}) async {
+    return await fetchUsersUseCase.call(FetchUsersListParams(
+      page: page,
+      forceLoadFromApi: forceApi,
+    ));
   }
 
   Future<dynamic> _saveBookmark(SOFUser user) async {

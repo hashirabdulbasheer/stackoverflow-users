@@ -14,15 +14,22 @@ class SOFFetchUsersUseCase
 
   @override
   Future<Either<Failure, List<SOFUser>>> call(FetchUsersListParams params) {
-    return repository.fetchUsers(page: params.page);
+    return repository.fetchUsers(
+      page: params.page,
+      forceLoadFromApi: params.forceLoadFromApi,
+    );
   }
 }
 
 class FetchUsersListParams extends Equatable {
   final int page;
+  final bool? forceLoadFromApi;
 
-  const FetchUsersListParams({required this.page});
+  const FetchUsersListParams({required this.page, this.forceLoadFromApi});
 
   @override
-  List<Object> get props => [page];
+  List<Object?> get props => [
+        page,
+        forceLoadFromApi,
+      ];
 }

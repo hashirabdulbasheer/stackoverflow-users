@@ -6,6 +6,6 @@ import '../entities/reputation.dart';
 import '../entities/user.dart';
 
 abstract class SOFUsersRepository extends SOFBaseRepository {
-  Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page});
+  Future<Either<Failure, List<SOFUser>>> fetchUsers({required int page, bool? forceLoadFromApi});
   Future<Either<Failure, List<SOFReputation>>> fetchReputations({required int userId, required int page});
 }

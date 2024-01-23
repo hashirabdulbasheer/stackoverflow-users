@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:stackoverflow_users/core/misc/logger.dart';
 
+import '../../../../../core/misc/logger.dart';
 import '../../../../../core/models/failures.dart';
 import '../../../domain/entities/user.dart';
 import '../../bloc/users/users.dart';
@@ -52,7 +52,6 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
       body: BlocConsumer<SOFUsersListPageBloc, SOFUsersListPageState>(
           listener: (context, state) {},
           builder: (context, state) {
-            print(state.runtimeType.toString());
             if (state is SOFUsersListPageLoadingState) {
               /// Loading
               return const Center(child: CircularProgressIndicator());
@@ -109,6 +108,6 @@ class _SOFUsersListPageState extends State<SOFUsersListPage> {
 
   void _onRefreshRequested() {
     SOFUsersListPageBloc bloc = context.read<SOFUsersListPageBloc>();
-    bloc.add(SOFInitializeUserListPageEvent());
+    bloc.add(SOFForceLoadFromApiUserListPageEvent());
   }
 }
