@@ -12,7 +12,6 @@ import 'package:stackoverflow_users/features/users/domain/usecases/save_bookmark
 import 'package:stackoverflow_users/features/users/presentation/bloc/users/users.dart';
 
 import '../../../../../utils/test_utils.dart';
-import '../../../domain/repositories/user_repository_test.dart';
 
 void main() {
   SOFBookmarksRepository makeBookmarksRepository(http.Client client) {
@@ -28,7 +27,7 @@ void main() {
     http.Client client = TestUtils.makeUsersClient(
         response: http.Response(TestUtils.singleUserJson, 201));
     SOFFetchUsersUseCase fetchUsersUseCase =
-        SOFFetchUsersUseCase(repository: makeRepository(client));
+        SOFFetchUsersUseCase(repository: TestUtils.makeUserRepository(client));
     SOFSaveBookmarksUseCase saveBookmarksUseCase =
         SOFSaveBookmarksUseCase(repository: makeBookmarksRepository(client));
     SOFDeleteBookmarksUseCase deleteBookmarksUseCase =
@@ -107,6 +106,5 @@ void main() {
         SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
       ],
     );
-
   });
 }
