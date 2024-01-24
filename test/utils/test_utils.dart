@@ -32,7 +32,18 @@ class TestUtils {
   static SOFUsersRepository makeUserRepository(http.Client client) {
     SOFUsersNetworkDataSource networkDataSource =
         SOFUsersNetworkDataSourceImpl(client: client);
-    SOFUsersLocalDataSource localDataSource = MockLocalDataSource();
+    SOFUsersLocalDataSource localDataSource = MockLocalDataSource(isUserAvailable: true);
+    SOFBookmarksLocalDataSource bookmarksDataSource = MockBookmarkDataSource();
+    return SOFUsersRepositoryImpl(
+        networkDataSource: networkDataSource,
+        localDataSource: localDataSource,
+        localBookmarksDataSource: bookmarksDataSource);
+  }
+
+  static SOFUsersRepository makeUserRepositoryWithNoUsers(http.Client client) {
+    SOFUsersNetworkDataSource networkDataSource =
+    SOFUsersNetworkDataSourceImpl(client: client);
+    SOFUsersLocalDataSource localDataSource = MockLocalDataSource(isUserAvailable: false);
     SOFBookmarksLocalDataSource bookmarksDataSource = MockBookmarkDataSource();
     return SOFUsersRepositoryImpl(
         networkDataSource: networkDataSource,
@@ -89,10 +100,17 @@ class TestUtils {
 }
 
 class MockLocalDataSource implements SOFUsersLocalDataSource {
+  bool isUserAvailable = true;
+
+  MockLocalDataSource({required this.isUserAvailable});
+
   @override
   Future<SOFResponse> fetchUsers({required int page}) {
-    return Future.value(
-        const SOFResponse(isSuccessful: true, body: TestUtils.singleUserJson));
+    if (isUserAvailable) {
+      return Future.value(const SOFResponse(
+          isSuccessful: true, body: TestUtils.singleUserJson));
+    }
+    return Future.value(const SOFResponse(isSuccessful: true, body: ""));
   }
 
   @override

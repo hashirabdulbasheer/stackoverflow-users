@@ -8,7 +8,7 @@ import 'package:stackoverflow_users/features/users/domain/repositories/users_rep
 import '../../../../utils/test_utils.dart';
 
 void main() {
-  /// Users list fetching
+  /// Users list network fetching
   group("Users list network fetching", () {
     test(
         'Repository should return success with empty user list for success network response for fetchUsers with empty json',
@@ -94,7 +94,9 @@ void main() {
     });
   });
 
+  /// Users list local fetching
   group("Users list local fetching", () {
+
     test(
         'Repository should return success with local user from db if user exists in db',
         () async {
@@ -108,6 +110,21 @@ void main() {
       expect(result.isRight, true);
       expect(result.right, [TestUtils.user]);
     });
+
+    test(
+        'Repository should return success with remote user in case there is no user in db',
+        () async {
+      http.Client client =
+          TestUtils.makeUsersClient(response: http.Response(TestUtils.singleUserJson, 201));
+      SOFUsersRepository repository = TestUtils.makeUserRepositoryWithNoUsers(client);
+
+      Either result = await repository.fetchUsers(page: 1);
+
+      expect(result.isLeft, false);
+      expect(result.isRight, true);
+      expect(result.right, [TestUtils.user]);
+    });
+
   });
 
   /// Reputations fetching
