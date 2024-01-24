@@ -14,4 +14,4 @@ Flutter app to display a list of stackoverflow users, their reputation and bookm
 - flutter run -d chrome
 
 **Video**
-https://drive.google.com/file/d/1LLeE_37q_XPOuRtCrBEIqeJZCQlFQpuS/view?usp=sharing
+- https://drive.google.com/file/d/1LLeE_37q_XPOuRtCrBEIqeJZCQlFQpuS/view?usp=share_link
