@@ -5,14 +5,14 @@ import '../../../../core/misc/logger.dart';
 import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/bookmarks_repository.dart';
+import '../datasources/datasource.dart';
 import '../datasources/local/user_dto.dart';
-import '../datasources/network/users_network_datasource.dart';
 
 ///
 ///  User repository implementation
 ///
 class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
-  final SOFUsersNetworkDataSource networkDataSource;
+  final SOFUsersDataSource networkDataSource;
   final SOFUsersBookmarkDataSource bookmarkDataSource;
 
   SOFBookmarksRepositoryImpl({

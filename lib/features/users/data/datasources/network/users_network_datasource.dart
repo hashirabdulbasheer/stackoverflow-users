@@ -1,21 +1,13 @@
 import 'package:http/http.dart' as http;
 
-import '../../../../../core/base_classes/base_network_datasource.dart';
 import '../../../../../core/configs/network_config.dart';
 import '../../../../../core/entities/enums/exception_type_enum.dart';
 import '../../../../../core/entities/exceptions.dart';
 import '../../../../../core/entities/sof_response.dart';
 import '../../../../../core/misc/logger.dart';
+import '../datasource.dart';
 
-abstract class SOFUsersNetworkDataSource extends SOFBaseNetworkDataSource {
-  /// Fetch users
-  Future<SOFResponse> fetchUsers({required int page});
-
-  /// Fetch reputation of user
-  Future<SOFResponse> fetchReputation({required int userId, required int page});
-}
-
-class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
+class SOFUsersNetworkDataSourceImpl implements SOFUsersDataSource {
   final http.Client client;
 
   SOFUsersNetworkDataSourceImpl({required this.client});
