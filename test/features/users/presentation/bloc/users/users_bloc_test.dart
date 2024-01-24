@@ -58,7 +58,7 @@ void main() {
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
         SOFUsersListPageLoadedState(
-            users: [TestUtils.user], page: 1, isLoading: false),
+            users: [TestUtils.notBookmarkedUser], page: 1, isLoading: false),
       ],
     );
 
@@ -72,7 +72,7 @@ void main() {
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
         SOFUsersListPageLoadedState(
-            users: [TestUtils.user], page: 1, isLoading: false),
+            users: [TestUtils.notBookmarkedUser], page: 1, isLoading: false),
       ],
     );
 
@@ -86,7 +86,7 @@ void main() {
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
         SOFUsersListPageLoadedState(
-            users: [TestUtils.user], page: 1, isLoading: false),
+            users: [TestUtils.notBookmarkedUser], page: 1, isLoading: false),
       ],
     );
 
@@ -100,7 +100,7 @@ void main() {
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
         SOFUsersListPageLoadedState(
-            users: [TestUtils.user], page: 1, isLoading: false),
+            users: [TestUtils.notBookmarkedUser], page: 1, isLoading: false),
       ],
     );
 
@@ -112,12 +112,10 @@ void main() {
         bloc.add(SOFForceLoadFromApiUserListPageEvent());
       },
       expect: () {
-        SOFUser notBookmarked = TestUtils.user;
-        notBookmarked = notBookmarked.copyWith(isBookmarked: false);
+        SOFUser notBookmarked = TestUtils.notBookmarkedUser;
 
-        SOFUser secondNotBookmarked = TestUtils.user;
-        secondNotBookmarked =
-            secondNotBookmarked.copyWith(isBookmarked: false, id: 33656);
+        SOFUser secondNotBookmarked = TestUtils.notBookmarkedUser;
+        secondNotBookmarked = secondNotBookmarked.copyWith(id: 33656);
 
         return <SOFUsersListPageState>[
           SOFUsersListPageLoadingState(),

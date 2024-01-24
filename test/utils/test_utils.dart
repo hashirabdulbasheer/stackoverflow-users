@@ -26,6 +26,16 @@ class TestUtils {
       reputation: 1444575,
       isBookmarked: true);
 
+  static SOFUser notBookmarkedUser = const SOFUser(
+      id: 22656,
+      name: "JonSkeet",
+      avatar:
+      "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      location: "Reading,UnitedKingdom",
+      age: null,
+      reputation: 1444575,
+      isBookmarked: false);
+
   static SOFReputation reputation = const SOFReputation(
       type: "post_upvoted", change: 0, createdAt: 1706033406, postId: 7580347);
 
@@ -137,7 +147,6 @@ class MockBookmarkDataSource implements SOFBookmarksLocalDataSource {
 
   @override
   Future<SOFResponse> fetchBookmarks() {
-    print("fetch called $json");
     return Future.value(
         SOFResponse(isSuccessful: true, body: json));
   }
