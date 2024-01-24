@@ -7,4 +7,7 @@ abstract class SOFUsersDataSource extends SOFBaseDataSource {
 
   /// Fetch reputation of user
   Future<SOFResponse> fetchReputation({required int userId, required int page});
+
+  /// Save
+  Future<bool> saveUsersPage({required int page, required String responseJson});
 }

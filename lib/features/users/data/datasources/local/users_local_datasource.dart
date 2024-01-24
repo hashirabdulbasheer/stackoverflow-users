@@ -23,10 +23,55 @@ class SOFUsersLocalDataSourceImpl implements SOFUsersDataSource {
   }
 
   @override
+  Future<bool> saveUsersPage(
+      {required int page, required String responseJson}) {
+    if (responseJson.isNotEmpty) {
+      localDataSource.putUpdate(
+          page.toString(), _mapPageDtoResponse(page, responseJson));
+
+      return Future.value(true);
+    }
+
+    return Future.value(false);
+  }
+
+  @override
   Future<SOFResponse> fetchReputation(
       {required int userId, required int page}) {
     // Not saving reputations in local data source for now
     throw UnimplementedError();
+  }
+
+
+  /// Mappers
+  SOFPageDto _mapPageDtoResponse(int page, String response) {
+    if (jsonDecode(response)['items'] != null) {
+      var usersList = jsonDecode(response)['items'] as List;
+      if (usersList.isNotEmpty) {
+        return SOFPageDto(
+            page: page,
+            users: usersList
+                .map((e) =>
+                SOFUserDto(
+                    id: e["user_id"],
+                    name: e["display_name"],
+                    avatar: e["profile_image"],
+                    location: e["location"],
+                    reputation: e["reputation"],
+                    age: e["age"]))
+                .toList(),
+            lastUpdateTimeMs: DateTime
+                .now()
+                .millisecondsSinceEpoch);
+      }
+    }
+
+    return SOFPageDto(
+        page: page,
+        users: [],
+        lastUpdateTimeMs: DateTime
+            .now()
+            .millisecondsSinceEpoch);
   }
 
   String _mapPageDtoToUsersJsonString(SOFPageDto pageDto) {
