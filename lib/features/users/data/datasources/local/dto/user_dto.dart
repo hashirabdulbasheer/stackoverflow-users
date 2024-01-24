@@ -14,7 +14,7 @@ class SOFUserDto {
   final String avatar;
 
   @HiveField(3)
-  final String location;
+  final String? location;
 
   @HiveField(4)
   final int? age;

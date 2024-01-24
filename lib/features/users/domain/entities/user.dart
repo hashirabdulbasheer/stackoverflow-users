@@ -5,7 +5,7 @@ class SOFUser extends Equatable {
   final int id;
   final String name;
   final String avatar;
-  final String location;
+  final String? location;
   final int? age;
   final int reputation;
   final bool isBookmarked;

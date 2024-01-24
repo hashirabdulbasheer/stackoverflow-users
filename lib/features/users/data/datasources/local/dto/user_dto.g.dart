@@ -20,7 +20,7 @@ class SOFUserDtoAdapter extends TypeAdapter<SOFUserDto> {
       id: fields[0] as int,
       name: fields[1] as String,
       avatar: fields[2] as String,
-      location: fields[3] as String,
+      location: fields[3] as String?,
       reputation: fields[5] as int,
       age: fields[4] as int?,
     );
