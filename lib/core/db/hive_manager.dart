@@ -133,10 +133,10 @@ class SOFDatabaseImpl extends SOFDatabase {
   Box get box => Hive.box(databaseName);
 }
 
-class SOFUsersLocalDataSource extends SOFDatabaseImpl {
-  SOFUsersLocalDataSource() : super('sof_pages_box');
+class SOFUsersHiveDB extends SOFDatabaseImpl {
+  SOFUsersHiveDB() : super('sof_pages_box');
 }
 
-class SOFUsersBookmarkDataSource extends SOFDatabaseImpl {
-  SOFUsersBookmarkDataSource() : super('sof_bookmarks_box');
+class SOFBookmarkHiveDB extends SOFDatabaseImpl {
+  SOFBookmarkHiveDB() : super('sof_bookmarks_box');
 }
