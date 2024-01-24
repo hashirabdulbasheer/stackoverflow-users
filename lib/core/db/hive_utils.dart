@@ -1,7 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../features/users/data/datasources/local/page_dto.dart';
-import '../../features/users/data/datasources/local/user_dto.dart';
+import '../../features/users/data/datasources/local/dto/page_dto.dart';
+import '../../features/users/data/datasources/local/dto/user_dto.dart';
 
 /// Open all hive boxes here
 class SOFHiveBoxes {

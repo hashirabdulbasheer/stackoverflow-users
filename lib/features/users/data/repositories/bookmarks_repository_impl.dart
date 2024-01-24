@@ -6,7 +6,7 @@ import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/bookmarks_repository.dart';
 import '../datasources/datasource.dart';
-import '../datasources/local/user_dto.dart';
+import '../datasources/local/dto/user_dto.dart';
 
 ///
 ///  User repository implementation

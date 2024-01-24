@@ -12,8 +12,8 @@ import '../../domain/entities/reputation.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../datasources/datasource.dart';
-import '../datasources/local/page_dto.dart';
-import '../datasources/local/user_dto.dart';
+import '../datasources/local/dto/page_dto.dart';
+import '../datasources/local/dto/user_dto.dart';
 import '../datasources/network/users_network_datasource.dart';
 
 ///
