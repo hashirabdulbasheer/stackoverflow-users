@@ -15,10 +15,10 @@ void main() {
     SOFFetchUsersUseCase fetchUsersUseCase =
         SOFFetchUsersUseCase(repository: TestUtils.makeUserRepository(client));
     SOFSaveBookmarksUseCase saveBookmarksUseCase = SOFSaveBookmarksUseCase(
-        repository: TestUtils.makeBookmarksRepository(client));
+        repository: TestUtils.makeBookmarksRepository());
     SOFDeleteBookmarksUseCase deleteBookmarksUseCase =
         SOFDeleteBookmarksUseCase(
-            repository: TestUtils.makeBookmarksRepository(client));
+            repository: TestUtils.makeBookmarksRepository());
 
     return SOFUsersListPageBloc(
         fetchUsersUseCase: fetchUsersUseCase,

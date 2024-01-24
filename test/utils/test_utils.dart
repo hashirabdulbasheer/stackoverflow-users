@@ -32,7 +32,8 @@ class TestUtils {
   static SOFUsersRepository makeUserRepository(http.Client client) {
     SOFUsersNetworkDataSource networkDataSource =
         SOFUsersNetworkDataSourceImpl(client: client);
-    SOFUsersLocalDataSource localDataSource = MockLocalDataSource(isUserAvailable: true);
+    SOFUsersLocalDataSource localDataSource =
+        MockLocalDataSource(isUserAvailable: true);
     SOFBookmarksLocalDataSource bookmarksDataSource = MockBookmarkDataSource();
     return SOFUsersRepositoryImpl(
         networkDataSource: networkDataSource,
@@ -42,8 +43,9 @@ class TestUtils {
 
   static SOFUsersRepository makeUserRepositoryWithNoUsers(http.Client client) {
     SOFUsersNetworkDataSource networkDataSource =
-    SOFUsersNetworkDataSourceImpl(client: client);
-    SOFUsersLocalDataSource localDataSource = MockLocalDataSource(isUserAvailable: false);
+        SOFUsersNetworkDataSourceImpl(client: client);
+    SOFUsersLocalDataSource localDataSource =
+        MockLocalDataSource(isUserAvailable: false);
     SOFBookmarksLocalDataSource bookmarksDataSource = MockBookmarkDataSource();
     return SOFUsersRepositoryImpl(
         networkDataSource: networkDataSource,
@@ -51,7 +53,7 @@ class TestUtils {
         localBookmarksDataSource: bookmarksDataSource);
   }
 
-  static SOFBookmarksRepository makeBookmarksRepository(http.Client client) {
+  static SOFBookmarksRepository makeBookmarksRepository() {
     SOFBookmarksLocalDataSource bookmarksDataSource = MockBookmarkDataSource();
     return SOFBookmarksRepositoryImpl(bookmarkDataSource: bookmarksDataSource);
   }
@@ -95,6 +97,10 @@ class TestUtils {
   static const String singleUserJson =
       '{ "items": [{"badge_counts":{"bronze":9231,"silver":9183,"gold":873},"account_id":11683,"is_employee":false,"last_modified_date":1704297305,"last_access_date":1705927755,"reputation_change_year":3517,"reputation_change_quarter":3517,"reputation_change_month":3517,"reputation_change_week":196,"reputation_change_day":130,"reputation":1444575,"creation_date":1222430705,"user_type":"registered","user_id":22656,"accept_rate":86,"location":"Reading,UnitedKingdom","website_url":"http://csharpindepth.com","link":"https://stackoverflow.com/users/22656/jon-skeet","profile_image":"https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG","display_name":"JonSkeet"}]}';
 
+  static const String doubleUserJson =
+      '{ "items": [{"badge_counts":{"bronze":9231,"silver":9183,"gold":873},"account_id":11683,"is_employee":false,"last_modified_date":1704297305,"last_access_date":1705927755,"reputation_change_year":3517,"reputation_change_quarter":3517,"reputation_change_month":3517,"reputation_change_week":196,"reputation_change_day":130,"reputation":1444575,"creation_date":1222430705,"user_type":"registered","user_id":33656,"accept_rate":86,"location":"Reading,UnitedKingdom","website_url":"http://csharpindepth.com","link":"https://stackoverflow.com/users/22656/jon-skeet","profile_image":"https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG","display_name":"JonSkeet"}, '
+      '{"badge_counts":{"bronze":9231,"silver":9183,"gold":873},"account_id":11683,"is_employee":false,"last_modified_date":1704297305,"last_access_date":1705927755,"reputation_change_year":3517,"reputation_change_quarter":3517,"reputation_change_month":3517,"reputation_change_week":196,"reputation_change_day":130,"reputation":1444575,"creation_date":1222430705,"user_type":"registered","user_id":22656,"accept_rate":86,"location":"Reading,UnitedKingdom","website_url":"http://csharpindepth.com","link":"https://stackoverflow.com/users/22656/jon-skeet","profile_image":"https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG","display_name":"JonSkeet"}]}';
+
   static const String singleReputationJson =
       '{ "items": [{"reputation_history_type": "post_upvoted","reputation_change": 0,"post_id": 7580347,"creation_date": 1706033406,"user_id": 22656}]}';
 }
@@ -121,19 +127,24 @@ class MockLocalDataSource implements SOFUsersLocalDataSource {
 }
 
 class MockBookmarkDataSource implements SOFBookmarksLocalDataSource {
+  String json = "{}";
+
   @override
   Future<SOFResponse> deleteBookmark(String userJson) {
+    json = "{}";
     return Future.value(const SOFResponse(isSuccessful: true, body: "success"));
   }
 
   @override
   Future<SOFResponse> fetchBookmarks() {
+    print("fetch called $json");
     return Future.value(
-        const SOFResponse(isSuccessful: true, body: TestUtils.singleUserJson));
+        SOFResponse(isSuccessful: true, body: json));
   }
 
   @override
   Future<SOFResponse> saveBookmark(String userJson) {
+    json = '{"items": [$userJson]}';
     return Future.value(const SOFResponse(isSuccessful: true, body: "success"));
   }
 }
