@@ -18,3 +18,14 @@ abstract class SOFUsersNetworkDataSource extends SOFUsersDataSource {
   /// Fetch reputation of user
   Future<SOFResponse> fetchReputation({required int userId, required int page});
 }
+
+abstract class SOFBookmarksLocalDataSource extends SOFBaseDataSource {
+  /// Fetch bookmarks
+  Future<SOFResponse> fetchBookmarks();
+
+  /// Save bookmark
+  Future<SOFResponse> saveBookmark(String userJson);
+
+  /// Delete bookmark
+  Future<SOFResponse> deleteBookmark(String userJson);
+}
