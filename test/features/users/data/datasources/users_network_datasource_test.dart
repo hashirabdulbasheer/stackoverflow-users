@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:stackoverflow_users/core/entities/enums/exception_type_enum.dart';
 import 'package:stackoverflow_users/core/entities/exceptions.dart';
 import 'package:stackoverflow_users/core/entities/sof_response.dart';
+import 'package:stackoverflow_users/features/users/data/datasources/datasource.dart';
 import 'package:stackoverflow_users/features/users/data/datasources/network/users_network_datasource.dart';
 
 import '../../../../utils/test_utils.dart';

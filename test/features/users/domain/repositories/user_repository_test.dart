@@ -17,7 +17,7 @@ void main() {
           TestUtils.makeUsersClient(response: http.Response("{}", 201));
       SOFUsersRepository repository = TestUtils.makeUserRepository(client);
 
-      Either result = await repository.fetchUsers(page: 1);
+      Either result = await repository.fetchUsers(page: 1, forceApi: true);
 
       expect(result.isLeft, false);
       expect(result.isRight, true);
@@ -31,7 +31,7 @@ void main() {
           TestUtils.makeUsersClient(response: http.Response("", 201));
       SOFUsersRepository repository = TestUtils.makeUserRepository(client);
 
-      Either result = await repository.fetchUsers(page: 1);
+      Either result = await repository.fetchUsers(page: 1, forceApi: true);
 
       expect(result.isLeft, true);
       expect(result.isRight, false);
@@ -45,7 +45,7 @@ void main() {
           TestUtils.makeUsersClient(response: http.Response("", 500));
       SOFUsersRepository repository = TestUtils.makeUserRepository(client);
 
-      Either result = await repository.fetchUsers(page: 1);
+      Either result = await repository.fetchUsers(page: 1, forceApi: true);
 
       expect(result.isLeft, true);
       expect(result.isRight, false);
@@ -59,7 +59,7 @@ void main() {
           response: http.Response(TestUtils.emptyUsersJson, 200));
       SOFUsersRepository repository = TestUtils.makeUserRepository(client);
 
-      Either result = await repository.fetchUsers(page: 1);
+      Either result = await repository.fetchUsers(page: 1, forceApi: true);
 
       expect(result.isLeft, false);
       expect(result.isRight, true);
@@ -73,7 +73,7 @@ void main() {
           response: http.Response(TestUtils.singleUserJson, 500));
       SOFUsersRepository repository = TestUtils.makeUserRepository(client);
 
-      Either result = await repository.fetchUsers(page: 1);
+      Either result = await repository.fetchUsers(page: 1, forceApi: true);
 
       expect(result.isLeft, true);
       expect(result.isRight, false);
@@ -86,7 +86,7 @@ void main() {
           response: http.Response(TestUtils.singleUserJson, 200));
       SOFUsersRepository repository = TestUtils.makeUserRepository(client);
 
-      Either result = await repository.fetchUsers(page: 1);
+      Either result = await repository.fetchUsers(page: 1, forceApi: true);
 
       expect(result.isLeft, false);
       expect(result.isRight, true);

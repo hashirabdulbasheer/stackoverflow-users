@@ -25,13 +25,13 @@ void main() {
 
   group("bookmarks bloc tests", () {
     blocTest<SOFBookmarksListPageBloc, SOFBookmarksListPageState>(
-      'Initialization returns empty if not able to read bookmarks',
+      'Initialization returns valid bookmark user',
       build: () => makeBloc(),
       act: (bloc) {
         bloc.add(SOFLoadBookmarksListPageEvent());
       },
       expect: () => <SOFBookmarksListPageState>[
-        SOFBookmarksListPageLoadedState(users: []),
+        SOFBookmarksListPageLoadedState(users: [TestUtils.user]),
       ],
     );
   });

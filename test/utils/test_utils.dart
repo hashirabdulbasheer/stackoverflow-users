@@ -1,8 +1,8 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:stackoverflow_users/core/configs/network_config.dart';
-import 'package:stackoverflow_users/core/db/hive_manager.dart';
+import 'package:stackoverflow_users/core/entities/sof_response.dart';
+import 'package:stackoverflow_users/features/users/data/datasources/datasource.dart';
 import 'package:stackoverflow_users/features/users/data/datasources/network/users_network_datasource.dart';
 import 'package:stackoverflow_users/features/users/data/repositories/bookmarks_repository_impl.dart';
 import 'package:stackoverflow_users/features/users/data/repositories/users_repository_impl.dart';
@@ -24,7 +24,7 @@ class TestUtils {
       location: "Reading,UnitedKingdom",
       age: null,
       reputation: 1444575,
-      isBookmarked: false);
+      isBookmarked: true);
 
   static SOFReputation reputation = const SOFReputation(
       type: "post_upvoted", change: 0, createdAt: 1706033406, postId: 7580347);
@@ -33,20 +33,16 @@ class TestUtils {
     SOFUsersNetworkDataSource networkDataSource =
         SOFUsersNetworkDataSourceImpl(client: client);
     SOFUsersLocalDataSource localDataSource = MockLocalDataSource();
-    SOFUsersBookmarkDataSource bookmarksDataSource = MockBookmarksDataSource();
+    SOFBookmarksLocalDataSource bookmarksDataSource = MockBookmarkDataSource();
     return SOFUsersRepositoryImpl(
         networkDataSource: networkDataSource,
         localDataSource: localDataSource,
-        bookmarkDataSource: bookmarksDataSource);
+        localBookmarksDataSource: bookmarksDataSource);
   }
 
   static SOFBookmarksRepository makeBookmarksRepository(http.Client client) {
-    SOFUsersNetworkDataSource networkDataSource =
-        SOFUsersNetworkDataSourceImpl(client: client);
-    SOFUsersBookmarkDataSource bookmarksDataSource = MockBookmarksDataSource();
-    return SOFBookmarksRepositoryImpl(
-        networkDataSource: networkDataSource,
-        bookmarkDataSource: bookmarksDataSource);
+    SOFBookmarksLocalDataSource bookmarksDataSource = MockBookmarkDataSource();
+    return SOFBookmarksRepositoryImpl(bookmarkDataSource: bookmarksDataSource);
   }
 
   static MockClient makeUsersClient({required http.Response response}) {
@@ -92,106 +88,34 @@ class TestUtils {
       '{ "items": [{"reputation_history_type": "post_upvoted","reputation_change": 0,"post_id": 7580347,"creation_date": 1706033406,"user_id": 22656}]}';
 }
 
-class MockLocalDataSource extends SOFUsersLocalDataSource {
+class MockLocalDataSource implements SOFUsersLocalDataSource {
   @override
-  Future addUpdate<T>(T item) {
-    return Future.value(true);
+  Future<SOFResponse> fetchUsers({required int page}) {
+    return Future.value(
+        const SOFResponse(isSuccessful: true, body: TestUtils.singleUserJson));
   }
 
   @override
-  // TODO: implement box
-  Box get box => throw UnimplementedError();
-
-  @override
-  Future clearTheBox() {
-    return Future.value(true);
-  }
-
-  @override
-  Future delete(String key) {
-    return Future.value(true);
-  }
-
-  @override
-  Future deleteAll(List<String> keys) {
-    return Future.value(true);
-  }
-
-  @override
-  Future deleteAtIndex(int index) {
-    return Future.value(true);
-  }
-
-  @override
-  SOFPageDto? get<SOFPageDto>(String key) {
-    return null;
-  }
-
-  @override
-  List<T>? getAll<T>() {}
-
-  @override
-  T? getAtIndex<T>(int index) {}
-
-  @override
-  Future putAtIndex<T>(int index, T item) {
-    return Future.value(true);
-  }
-
-  @override
-  Future putUpdate<T>(String key, T item) {
+  Future<bool> saveUsersPage(
+      {required int page, required String responseJson}) {
     return Future.value(true);
   }
 }
 
-class MockBookmarksDataSource extends SOFUsersBookmarkDataSource {
+class MockBookmarkDataSource implements SOFBookmarksLocalDataSource {
   @override
-  Future addUpdate<T>(T item) {
-    return Future.value(true);
+  Future<SOFResponse> deleteBookmark(String userJson) {
+    return Future.value(const SOFResponse(isSuccessful: true, body: "success"));
   }
 
   @override
-  // TODO: implement box
-  Box get box => throw UnimplementedError();
-
-  @override
-  Future clearTheBox() {
-    return Future.value(true);
+  Future<SOFResponse> fetchBookmarks() {
+    return Future.value(
+        const SOFResponse(isSuccessful: true, body: TestUtils.singleUserJson));
   }
 
   @override
-  Future delete(String key) {
-    return Future.value(true);
-  }
-
-  @override
-  Future deleteAll(List<String> keys) {
-    return Future.value(true);
-  }
-
-  @override
-  Future deleteAtIndex(int index) {
-    return Future.value(true);
-  }
-
-  @override
-  T? get<T>(String key) {
-    return null;
-  }
-
-  @override
-  List<T>? getAll<T>() {}
-
-  @override
-  T? getAtIndex<T>(int index) {}
-
-  @override
-  Future putAtIndex<T>(int index, T item) {
-    return Future.value(true);
-  }
-
-  @override
-  Future putUpdate<T>(String key, T item) {
-    return Future.value(true);
+  Future<SOFResponse> saveBookmark(String userJson) {
+    return Future.value(const SOFResponse(isSuccessful: true, body: "success"));
   }
 }

@@ -1,11 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:stackoverflow_users/core/db/hive_manager.dart';
-import 'package:stackoverflow_users/features/users/data/datasources/network/users_network_datasource.dart';
-import 'package:stackoverflow_users/features/users/data/repositories/bookmarks_repository_impl.dart';
-import 'package:stackoverflow_users/features/users/domain/entities/user.dart';
-import 'package:stackoverflow_users/features/users/domain/repositories/bookmarks_repository.dart';
 import 'package:stackoverflow_users/features/users/domain/usecases/delete_bookmarks_usecase.dart';
 import 'package:stackoverflow_users/features/users/domain/usecases/fetch_users_usecase.dart';
 import 'package:stackoverflow_users/features/users/domain/usecases/save_bookmarks_usecase.dart';
@@ -14,40 +9,22 @@ import 'package:stackoverflow_users/features/users/presentation/bloc/users/users
 import '../../../../../utils/test_utils.dart';
 
 void main() {
-  SOFBookmarksRepository makeBookmarksRepository(http.Client client) {
-    SOFUsersNetworkDataSource networkDataSource =
-        SOFUsersNetworkDataSourceImpl(client: client);
-    SOFUsersBookmarkDataSource bookmarksDataSource = MockBookmarksDataSource();
-    return SOFBookmarksRepositoryImpl(
-        networkDataSource: networkDataSource,
-        bookmarkDataSource: bookmarksDataSource);
-  }
-
   SOFUsersListPageBloc makeBloc() {
     http.Client client = TestUtils.makeUsersClient(
         response: http.Response(TestUtils.singleUserJson, 201));
     SOFFetchUsersUseCase fetchUsersUseCase =
         SOFFetchUsersUseCase(repository: TestUtils.makeUserRepository(client));
-    SOFSaveBookmarksUseCase saveBookmarksUseCase =
-        SOFSaveBookmarksUseCase(repository: makeBookmarksRepository(client));
+    SOFSaveBookmarksUseCase saveBookmarksUseCase = SOFSaveBookmarksUseCase(
+        repository: TestUtils.makeBookmarksRepository(client));
     SOFDeleteBookmarksUseCase deleteBookmarksUseCase =
-        SOFDeleteBookmarksUseCase(repository: makeBookmarksRepository(client));
+        SOFDeleteBookmarksUseCase(
+            repository: TestUtils.makeBookmarksRepository(client));
 
     return SOFUsersListPageBloc(
         fetchUsersUseCase: fetchUsersUseCase,
         saveBookmarksUseCase: saveBookmarksUseCase,
         deleteBookmarksUseCase: deleteBookmarksUseCase);
   }
-
-  SOFUser user = const SOFUser(
-      id: 22656,
-      name: "JonSkeet",
-      avatar:
-          "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
-      location: "Reading,UnitedKingdom",
-      age: null,
-      reputation: 1444575,
-      isBookmarked: false);
 
   group("user bloc tests", () {
     blocTest<SOFUsersListPageBloc, SOFUsersListPageState>(
@@ -58,7 +35,8 @@ void main() {
       },
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+        SOFUsersListPageLoadedState(
+            users: [TestUtils.user], page: 1, isLoading: false),
       ],
     );
 
@@ -71,9 +49,8 @@ void main() {
       },
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: true),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+        SOFUsersListPageLoadedState(
+            users: [TestUtils.user], page: 1, isLoading: false),
       ],
     );
 
@@ -82,13 +59,12 @@ void main() {
       build: () => makeBloc(),
       act: (bloc) {
         bloc.add(SOFInitializeUserListPageEvent());
-        bloc.add(SOFSaveBookmarkEvent(user: user));
+        bloc.add(SOFSaveBookmarkEvent(user: TestUtils.user));
       },
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: true),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+        SOFUsersListPageLoadedState(
+            users: [TestUtils.user], page: 1, isLoading: false),
       ],
     );
 
@@ -97,13 +73,12 @@ void main() {
       build: () => makeBloc(),
       act: (bloc) {
         bloc.add(SOFInitializeUserListPageEvent());
-        bloc.add(SOFRemoveBookmarkEvent(user: user));
+        bloc.add(SOFRemoveBookmarkEvent(user: TestUtils.user));
       },
       expect: () => <SOFUsersListPageState>[
         SOFUsersListPageLoadingState(),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: true),
-        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+        SOFUsersListPageLoadedState(
+            users: [TestUtils.user], page: 1, isLoading: false),
       ],
     );
   });
