@@ -5,6 +5,7 @@ import 'package:stackoverflow_users/core/configs/network_config.dart';
 import 'package:stackoverflow_users/core/db/hive_manager.dart';
 import 'package:stackoverflow_users/features/users/data/datasources/network/users_network_datasource.dart';
 import 'package:stackoverflow_users/features/users/data/repositories/users_repository_impl.dart';
+import 'package:stackoverflow_users/features/users/domain/entities/reputation.dart';
 import 'package:stackoverflow_users/features/users/domain/entities/user.dart';
 import 'package:stackoverflow_users/features/users/domain/repositories/users_repository.dart';
 
@@ -23,6 +24,8 @@ class TestUtils {
       reputation: 1444575,
       isBookmarked: false);
 
+  static SOFReputation reputation = const SOFReputation(
+      type: "post_upvoted", change: 0, createdAt: 1706033406, postId: 7580347);
 
   static SOFUsersRepository makeUserRepository(http.Client client) {
     SOFUsersNetworkDataSource networkDataSource =

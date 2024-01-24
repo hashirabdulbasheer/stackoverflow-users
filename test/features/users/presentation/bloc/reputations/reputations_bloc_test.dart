@@ -8,8 +8,8 @@ import '../../../../../utils/test_utils.dart';
 
 void main() {
   SOFReputationsListPageBloc makeBloc() {
-    http.Client client = TestUtils.makeUsersClient(
-        response: http.Response(TestUtils.singleUserJson, 201));
+    http.Client client = TestUtils.makeReputationsClient(
+        response: http.Response(TestUtils.singleReputationJson, 201));
     SOFFetchReputationsUseCase fetchReputationsUseCase =
         SOFFetchReputationsUseCase(
             repository: TestUtils.makeUserRepository(client));
@@ -19,75 +19,41 @@ void main() {
     );
   }
 
-  group("user bloc tests", () {
+  group("reputation bloc tests", () {
     blocTest<SOFReputationsListPageBloc, SOFReputationsListPageState>(
-      'Initialization event loads users',
+      'Initialization event loads reputations',
       build: () => makeBloc(),
       act: (bloc) {
         bloc.add(SOFInitializeReputationsListPageEvent(userId: 22656));
       },
       expect: () => <SOFReputationsListPageState>[
-        SOFReputationsListPageLoadingState(),
         SOFReputationsListPageLoadedState(
-            page: 1, isLoading: false, reputations: [], userId: 22656),
-      ],
-    );
-
-    /*
-    blocTest<SOFReputationsListPageBloc, SOFReputationsListPageState>(
-      'Page load event loads same user if duplicate',
-      build: () => makeBloc(),
-      act: (bloc) {
-        bloc.add(SOFInitializeUserListPageEvent());
-        bloc.add(SOFReputationsListPageLoadEvent(page: 1));
-      },
-      expect: () => <SOFReputationsListPageState>[
-        SOFReputationsListPageLoadingState(),
-        SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: false),
-        SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: true),
-        SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: false),
+            page: 1,
+            isLoading: false,
+            reputations: [TestUtils.reputation],
+            userId: 22656),
       ],
     );
 
     blocTest<SOFReputationsListPageBloc, SOFReputationsListPageState>(
-      'Save bookmark flow ',
+      'Page load event loads reputations',
       build: () => makeBloc(),
       act: (bloc) {
-        bloc.add(SOFInitializeUserListPageEvent());
-        bloc.add(SOFSaveBookmarkEvent(user: user));
+        bloc.add(SOFInitializeReputationsListPageEvent(userId: 22656));
+        bloc.add(SOFReputationsListPageLoadEvent(page: 1, userId: 22656));
       },
       expect: () => <SOFReputationsListPageState>[
-        SOFReputationsListPageLoadingState(),
         SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: false),
+            page: 1,
+            isLoading: false,
+            reputations: [TestUtils.reputation],
+            userId: 22656),
         SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: true),
-        SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: false),
+            page: 1,
+            isLoading: false,
+            reputations: [TestUtils.reputation, TestUtils.reputation],
+            userId: 22656)
       ],
     );
-
-    blocTest<SOFReputationsListPageBloc, SOFReputationsListPageState>(
-      'Delete bookmark flow ',
-      build: () => makeBloc(),
-      act: (bloc) {
-        bloc.add(SOFInitializeUserListPageEvent());
-        bloc.add(SOFRemoveBookmarkEvent(user: user));
-      },
-      expect: () => <SOFReputationsListPageState>[
-        SOFReputationsListPageLoadingState(),
-        SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: false),
-        SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: true),
-        SOFReputationsListPageLoadedState(
-            users: [user], page: 1, isLoading: false),
-      ],
-    );
-
-     */
   });
 }
