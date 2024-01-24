@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:either_dart/either.dart';
 
 import '../../../../core/db/hive_manager.dart';
@@ -12,22 +11,20 @@ import '../../domain/entities/reputation.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../datasources/datasource.dart';
-import '../datasources/local/dto/page_dto.dart';
 import '../datasources/local/dto/user_dto.dart';
-import '../datasources/network/users_network_datasource.dart';
 
 ///
 ///  User repository implementation
 ///
 class SOFUsersRepositoryImpl extends SOFUsersRepository {
-  final SOFUsersDataSource networkDataSource;
+  final SOFUsersNetworkDataSource networkDataSource;
   final SOFUsersLocalDataSource localDataSource;
-  final SOFUsersBookmarkDataSource bookmarkDataSource;
+  final SOFBookmarkHiveDB bookmarksHiveDB;
 
   SOFUsersRepositoryImpl({
     required this.networkDataSource,
     required this.localDataSource,
-    required this.bookmarkDataSource,
+    required this.bookmarksHiveDB,
   });
 
   @override
@@ -35,25 +32,31 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       {required int page, bool? forceApi}) async {
     try {
       /// Fetch bookmarked users
-      List<SOFUserDto>? bookmarkedUsers = bookmarkDataSource.getAll();
+      List<SOFUserDto>? bookmarkedUsers = bookmarksHiveDB.getAll();
 
       /// if page is present in db then return that
-      SOFPageDto? pageDto = localDataSource.get(page.toString());
-      if (pageDto != null && pageDto.users.isNotEmpty && forceApi != true) {
-        // include cache policy checks later on to check cache validity
+      SOFResponse response;
+      SOFResponse localResponse = await localDataSource.fetchUsers(page: page);
+      // include cache policy checks later on to check cache validity
+      if (!localResponse.isSuccessful || forceApi == true) {
+        /// page not found in db - fetch from api
+        response = await networkDataSource.fetchUsers(page: page);
+      } else {
+        response = localResponse;
         SOFLogger.d("DB: Page $page");
-        return Right(_mapPageDtoToUsers(pageDto, bookmarkedUsers));
       }
 
-      /// page not found in db - fetch from api
-      SOFResponse response = await networkDataSource.fetchUsers(page: page);
       if (response.isSuccessful && response.body?.isNotEmpty == true) {
+        // update local with network page
+        localDataSource.saveUsersPage(
+          page: page,
+          responseJson: response.body ?? "",
+        );
         // parse response to domain model
-        List<SOFUser> users =
-            _mapUsersResponse(response.body ?? "", bookmarkedUsers);
-        // update db
-        localDataSource.putUpdate(
-            page.toString(), _mapUsersToPageDto(page, users));
+        List<SOFUser> users = _mapUsersResponse(
+          response.body ?? "",
+          bookmarkedUsers,
+        );
         // return
         return Right(users);
       }
@@ -101,46 +104,13 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
               id: e["user_id"],
               name: e["display_name"],
               avatar: e["profile_image"],
-              location: e["location"] ?? "error.location_unavailable".tr(),
+              location: e["location"],
               reputation: e["reputation"],
               isBookmarked: _isBookmarked(e["user_id"], bookmarks),
               age: e["age"]))
           .toList();
     }
     return [];
-  }
-
-  List<SOFUser> _mapPageDtoToUsers(
-      SOFPageDto pageDto, List<SOFUserDto>? bookmarks) {
-    var usersList = pageDto.users;
-    if (usersList.isNotEmpty) {
-      return usersList
-          .map((e) => SOFUser(
-              id: e.id,
-              name: e.name,
-              avatar: e.avatar,
-              location: e.location,
-              reputation: e.reputation,
-              isBookmarked: _isBookmarked(e.id, bookmarks),
-              age: e.age))
-          .toList();
-    }
-    return [];
-  }
-
-  SOFPageDto _mapUsersToPageDto(int page, List<SOFUser> users) {
-    return SOFPageDto(
-        page: page,
-        users: users
-            .map((e) => SOFUserDto(
-                id: e.id,
-                name: e.name,
-                avatar: e.avatar,
-                location: e.location,
-                reputation: e.reputation,
-                age: e.age))
-            .toList(),
-        lastUpdateTimeMs: DateTime.now().millisecondsSinceEpoch);
   }
 
   bool _isBookmarked(int userId, List<SOFUserDto>? bookmarks) {
