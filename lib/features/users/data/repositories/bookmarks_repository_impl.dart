@@ -1,34 +1,31 @@
+import 'dart:convert';
+
 import 'package:either_dart/either.dart';
 
-import '../../../../core/db/hive_manager.dart';
+import '../../../../core/entities/sof_response.dart';
 import '../../../../core/misc/logger.dart';
 import '../../../../core/models/failures.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/bookmarks_repository.dart';
 import '../datasources/datasource.dart';
-import '../datasources/local/dto/user_dto.dart';
 
 ///
 ///  User repository implementation
 ///
 class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
-  final SOFUsersDataSource networkDataSource;
-  final SOFUsersBookmarkDataSource bookmarkDataSource;
+  final SOFBookmarksLocalDataSource bookmarkDataSource;
 
-  SOFBookmarksRepositoryImpl({
-    required this.networkDataSource,
-    required this.bookmarkDataSource,
-  });
+  SOFBookmarksRepositoryImpl({required this.bookmarkDataSource});
 
   @override
-  Either<Failure, List<SOFUser>> fetchBookmarks() {
+  Future<Either<Failure, List<SOFUser>>> fetchBookmarks() async {
     try {
-      List<SOFUserDto>? bookmarkedUsers = bookmarkDataSource.getAll();
-      if (bookmarkedUsers == null) {
+      SOFResponse response = await bookmarkDataSource.fetchBookmarks();
+      if (!response.isSuccessful) {
         return const Right([]);
       }
 
-      return Right(_mapUsersDtoToUsers(bookmarkedUsers));
+      return Right(_mapResponseToUsers(response.body ?? ""));
     } catch (error) {
       SOFLogger.e(error);
     }
@@ -37,27 +34,22 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
   }
 
   @override
-  Either<Failure, bool> saveBookmark(SOFUser user) {
-    try {
-      SOFUserDto userDto = _mapUserToUserDto(user);
-      bookmarkDataSource.putUpdate(user.id.toString(), userDto);
-
+  Future<Either<Failure, bool>> saveBookmark(SOFUser user) async {
+    SOFResponse response =
+        await bookmarkDataSource.saveBookmark(_mapUserToUserJson(user));
+    if (response.isSuccessful) {
       return const Right(true);
-    } catch (error) {
-      SOFLogger.e(error);
     }
 
     return Left(getDefaultFailure());
   }
 
   @override
-  Either<Failure, bool> deleteBookmark(SOFUser user) {
-    try {
-      bookmarkDataSource.delete(user.id.toString());
-
+  Future<Either<Failure, bool>> deleteBookmark(SOFUser user) async {
+    SOFResponse response =
+        await bookmarkDataSource.deleteBookmark(_mapUserToUserJson(user));
+    if (response.isSuccessful) {
       return const Right(true);
-    } catch (error) {
-      SOFLogger.e(error);
     }
 
     return Left(getDefaultFailure());
@@ -67,29 +59,34 @@ class SOFBookmarksRepositoryImpl extends SOFBookmarksRepository {
   /// Mappers
   ///
 
-  List<SOFUser> _mapUsersDtoToUsers(List<SOFUserDto> userDto) {
-    if (userDto.isNotEmpty) {
-      return userDto
-          .map((e) => SOFUser(
-              id: e.id,
-              name: e.name,
-              avatar: e.avatar,
-              location: e.location,
-              reputation: e.reputation,
-              isBookmarked: false,
-              age: e.age))
-          .toList();
+  List<SOFUser> _mapResponseToUsers(String response) {
+    if (jsonDecode(response)['items'] != null) {
+      var usersList = jsonDecode(response)['items'] as List;
+      if (usersList.isNotEmpty) {
+        return usersList
+            .map((e) => SOFUser(
+                id: e["user_id"],
+                name: e["display_name"],
+                avatar: e["profile_image"],
+                location: e["location"],
+                reputation: e["reputation"],
+                isBookmarked: true,
+                age: e["age"]))
+            .toList();
+      }
     }
     return [];
   }
 
-  SOFUserDto _mapUserToUserDto(SOFUser user) {
-    return SOFUserDto(
-        id: user.id,
-        name: user.name,
-        avatar: user.avatar,
-        location: user.location,
-        reputation: user.reputation,
-        age: user.age);
+  String _mapUserToUserJson(SOFUser user) {
+    Map<String, dynamic> userMap = {};
+    userMap["user_id"] = user.id;
+    userMap["display_name"] = user.name;
+    userMap["profile_image"] = user.avatar;
+    userMap["location"] = user.location;
+    userMap["reputation"] = user.reputation;
+    userMap["age"] = user.age;
+
+    return jsonEncode(userMap);
   }
 }
