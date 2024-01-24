@@ -4,9 +4,11 @@ import 'package:mockito/mockito.dart';
 import 'package:stackoverflow_users/core/configs/network_config.dart';
 import 'package:stackoverflow_users/core/db/hive_manager.dart';
 import 'package:stackoverflow_users/features/users/data/datasources/network/users_network_datasource.dart';
+import 'package:stackoverflow_users/features/users/data/repositories/bookmarks_repository_impl.dart';
 import 'package:stackoverflow_users/features/users/data/repositories/users_repository_impl.dart';
 import 'package:stackoverflow_users/features/users/domain/entities/reputation.dart';
 import 'package:stackoverflow_users/features/users/domain/entities/user.dart';
+import 'package:stackoverflow_users/features/users/domain/repositories/bookmarks_repository.dart';
 import 'package:stackoverflow_users/features/users/domain/repositories/users_repository.dart';
 
 import '../features/users/data/datasources/users_network_datasource_test.mocks.dart';
@@ -35,6 +37,15 @@ class TestUtils {
     return SOFUsersRepositoryImpl(
         networkDataSource: networkDataSource,
         localDataSource: localDataSource,
+        bookmarkDataSource: bookmarksDataSource);
+  }
+
+  static SOFBookmarksRepository makeBookmarksRepository(http.Client client) {
+    SOFUsersNetworkDataSource networkDataSource =
+        SOFUsersNetworkDataSourceImpl(client: client);
+    SOFUsersBookmarkDataSource bookmarksDataSource = MockBookmarksDataSource();
+    return SOFBookmarksRepositoryImpl(
+        networkDataSource: networkDataSource,
         bookmarkDataSource: bookmarksDataSource);
   }
 
