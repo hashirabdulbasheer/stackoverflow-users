@@ -7,7 +7,7 @@ import 'dto/page_dto.dart';
 import 'dto/user_dto.dart';
 
 class SOFUsersLocalDataSourceImpl implements SOFUsersLocalDataSource {
-  final SOFDatabase database;
+  final SOFUsersHiveDB database;
 
   SOFUsersLocalDataSourceImpl({required this.database});
 
@@ -35,7 +35,6 @@ class SOFUsersLocalDataSourceImpl implements SOFUsersLocalDataSource {
     return Future.value(false);
   }
 
-
   /// Mappers
   SOFPageDto _mapPageDtoResponse(int page, String response) {
     if (jsonDecode(response)['items'] != null) {
@@ -44,8 +43,7 @@ class SOFUsersLocalDataSourceImpl implements SOFUsersLocalDataSource {
         return SOFPageDto(
             page: page,
             users: usersList
-                .map((e) =>
-                SOFUserDto(
+                .map((e) => SOFUserDto(
                     id: e["user_id"],
                     name: e["display_name"],
                     avatar: e["profile_image"],
@@ -53,18 +51,14 @@ class SOFUsersLocalDataSourceImpl implements SOFUsersLocalDataSource {
                     reputation: e["reputation"],
                     age: e["age"]))
                 .toList(),
-            lastUpdateTimeMs: DateTime
-                .now()
-                .millisecondsSinceEpoch);
+            lastUpdateTimeMs: DateTime.now().millisecondsSinceEpoch);
       }
     }
 
     return SOFPageDto(
         page: page,
         users: [],
-        lastUpdateTimeMs: DateTime
-            .now()
-            .millisecondsSinceEpoch);
+        lastUpdateTimeMs: DateTime.now().millisecondsSinceEpoch);
   }
 
   String _mapPageDtoToUsersJsonString(SOFPageDto pageDto) {
