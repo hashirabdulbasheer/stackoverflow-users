@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import '../../features/users/data/datasources/datasource.dart';
+import '../../features/users/data/datasources/local/users_local_datasource.dart';
 import '../../features/users/data/datasources/network/users_network_datasource.dart';
 import '../../features/users/data/repositories/bookmarks_repository_impl.dart';
 import '../../features/users/data/repositories/users_repository_impl.dart';
@@ -20,15 +22,16 @@ class SOFDiContainer {
     /// network sources
     sl.registerFactory<SOFUsersNetworkDataSource>(
         () => SOFUsersNetworkDataSourceImpl(client: networkClient));
+    sl.registerFactory<SOFUsersLocalDataSource>(
+        () => SOFUsersLocalDataSourceImpl(database: sl()));
 
     /// repositories
     sl.registerFactory<SOFUsersRepository>(() => SOFUsersRepositoryImpl(
           networkDataSource: sl(),
           localDataSource: sl(),
-          bookmarkDataSource: sl(),
+          bookmarksHiveDB: sl(),
         ));
     sl.registerFactory<SOFBookmarksRepository>(() => SOFBookmarksRepositoryImpl(
-          networkDataSource: sl(),
           bookmarkDataSource: sl(),
         ));
 
@@ -45,9 +48,7 @@ class SOFDiContainer {
         () => SOFFetchReputationsUseCase(repository: sl()));
 
     /// Hive db
-    sl.registerLazySingleton<SOFUsersLocalDataSource>(
-        () => SOFUsersLocalDataSource());
-    sl.registerLazySingleton<SOFUsersBookmarkDataSource>(
-        () => SOFUsersBookmarkDataSource());
+    sl.registerLazySingleton<SOFUsersHiveDB>(() => SOFUsersHiveDB());
+    sl.registerLazySingleton<SOFBookmarkHiveDB>(() => SOFBookmarkHiveDB());
   }
 }
