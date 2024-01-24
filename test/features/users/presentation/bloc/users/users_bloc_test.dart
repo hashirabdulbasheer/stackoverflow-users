@@ -77,5 +77,36 @@ void main() {
         SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
       ],
     );
+
+    blocTest<SOFUsersListPageBloc, SOFUsersListPageState>(
+      'Save bookmark flow ',
+      build: () => makeBloc(),
+      act: (bloc) {
+        bloc.add(SOFInitializeUserListPageEvent());
+        bloc.add(SOFSaveBookmarkEvent(user: user));
+      },
+      expect: () => <SOFUsersListPageState>[
+        SOFUsersListPageLoadingState(),
+        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: true),
+        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+      ],
+    );
+
+    blocTest<SOFUsersListPageBloc, SOFUsersListPageState>(
+      'Delete bookmark flow ',
+      build: () => makeBloc(),
+      act: (bloc) {
+        bloc.add(SOFInitializeUserListPageEvent());
+        bloc.add(SOFRemoveBookmarkEvent(user: user));
+      },
+      expect: () => <SOFUsersListPageState>[
+        SOFUsersListPageLoadingState(),
+        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: true),
+        SOFUsersListPageLoadedState(users: [user], page: 1, isLoading: false),
+      ],
+    );
+
   });
 }
