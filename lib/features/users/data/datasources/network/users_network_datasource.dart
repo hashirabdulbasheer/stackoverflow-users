@@ -7,7 +7,7 @@ import '../../../../../core/entities/sof_response.dart';
 import '../../../../../core/misc/logger.dart';
 import '../datasource.dart';
 
-class SOFUsersNetworkDataSourceImpl implements SOFUsersDataSource {
+class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
   final http.Client client;
 
   SOFUsersNetworkDataSourceImpl({required this.client});
