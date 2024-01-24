@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:stackoverflow_users/features/users/data/datasources/local/bookmarks_local_datasource.dart';
 
 import '../../features/users/data/datasources/datasource.dart';
 import '../../features/users/data/datasources/local/users_local_datasource.dart';
@@ -19,17 +20,19 @@ final sl = GetIt.instance;
 
 class SOFDiContainer {
   static Future<void> init({required http.Client networkClient}) async {
-    /// network sources
+    /// data sources
     sl.registerFactory<SOFUsersNetworkDataSource>(
         () => SOFUsersNetworkDataSourceImpl(client: networkClient));
     sl.registerFactory<SOFUsersLocalDataSource>(
         () => SOFUsersLocalDataSourceImpl(database: sl()));
+    sl.registerFactory<SOFBookmarksLocalDataSource>(
+        () => SOFBookmarksLocalDataSourceImpl(database: sl()));
 
     /// repositories
     sl.registerFactory<SOFUsersRepository>(() => SOFUsersRepositoryImpl(
           networkDataSource: sl(),
           localDataSource: sl(),
-          bookmarksHiveDB: sl(),
+          localBookmarksDataSource: sl(),
         ));
     sl.registerFactory<SOFBookmarksRepository>(() => SOFBookmarksRepositoryImpl(
           bookmarkDataSource: sl(),

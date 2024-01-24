@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:either_dart/either.dart';
 
-import '../../../../core/db/hive_manager.dart';
 import '../../../../core/entities/exceptions.dart';
 import '../../../../core/entities/sof_response.dart';
 import '../../../../core/misc/logger.dart';
@@ -11,7 +10,6 @@ import '../../domain/entities/reputation.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../datasources/datasource.dart';
-import '../datasources/local/dto/user_dto.dart';
 
 ///
 ///  User repository implementation
@@ -19,12 +17,12 @@ import '../datasources/local/dto/user_dto.dart';
 class SOFUsersRepositoryImpl extends SOFUsersRepository {
   final SOFUsersNetworkDataSource networkDataSource;
   final SOFUsersLocalDataSource localDataSource;
-  final SOFBookmarkHiveDB bookmarksHiveDB;
+  final SOFBookmarksLocalDataSource localBookmarksDataSource;
 
   SOFUsersRepositoryImpl({
     required this.networkDataSource,
     required this.localDataSource,
-    required this.bookmarksHiveDB,
+    required this.localBookmarksDataSource,
   });
 
   @override
@@ -32,31 +30,41 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       {required int page, bool? forceApi}) async {
     try {
       /// Fetch bookmarked users
-      List<SOFUserDto>? bookmarkedUsers = bookmarksHiveDB.getAll();
-
-      /// if page is present in db then return that
-      SOFResponse response;
-      SOFResponse localResponse = await localDataSource.fetchUsers(page: page);
-      // include cache policy checks later on to check cache validity
-      if (!localResponse.isSuccessful || forceApi == true) {
-        /// page not found in db - fetch from api
-        response = await networkDataSource.fetchUsers(page: page);
-      } else {
-        response = localResponse;
-        SOFLogger.d("DB: Page $page");
+      List<SOFUser> bookmarkedUsers = [];
+      SOFResponse localBookmarksResponse =
+          await localBookmarksDataSource.fetchBookmarks();
+      if (localBookmarksResponse.isSuccessful &&
+          localBookmarksResponse.body?.isNotEmpty == true) {
+        bookmarkedUsers =
+            _mapResponseToUsers(localBookmarksResponse.body ?? "", null);
       }
 
-      if (response.isSuccessful && response.body?.isNotEmpty == true) {
+      /// if page is present in db then return that
+      SOFResponse localResponse = await localDataSource.fetchUsers(page: page);
+      if (localResponse.isSuccessful &&
+          localResponse.body?.isNotEmpty == true &&
+          forceApi != true) {
+        // parse response to domain model
+        List<SOFUser> users =
+            _mapResponseToUsers(localResponse.body ?? "", bookmarkedUsers);
+        SOFLogger.d("DB: Page $page");
+        // return
+        return Right(users);
+      }
+
+      /// page not found in db - fetch from api
+      SOFResponse networkResponse =
+          await networkDataSource.fetchUsers(page: page);
+      if (networkResponse.isSuccessful &&
+          networkResponse.body?.isNotEmpty == true) {
         // update local with network page
         localDataSource.saveUsersPage(
           page: page,
-          responseJson: response.body ?? "",
+          responseJson: networkResponse.body ?? "",
         );
         // parse response to domain model
-        List<SOFUser> users = _mapUsersResponse(
-          response.body ?? "",
-          bookmarkedUsers,
-        );
+        List<SOFUser> users =
+            _mapResponseToUsers(networkResponse.body ?? "", bookmarkedUsers);
         // return
         return Right(users);
       }
@@ -92,31 +100,28 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
   ///
 
   // Users
-  List<SOFUser> _mapUsersResponse(
-      String response, List<SOFUserDto>? bookmarks) {
-    if (jsonDecode(response)['items'] == null) {
-      return [];
-    }
-    var usersList = jsonDecode(response)['items'] as List;
-    if (usersList.isNotEmpty) {
-      return usersList
-          .map((e) => SOFUser(
-              id: e["user_id"],
-              name: e["display_name"],
-              avatar: e["profile_image"],
-              location: e["location"],
-              reputation: e["reputation"],
-              isBookmarked: _isBookmarked(e["user_id"], bookmarks),
-              age: e["age"]))
-          .toList();
+  List<SOFUser> _mapResponseToUsers(String response, List<SOFUser>? bookmarks) {
+    if (jsonDecode(response)['items'] != null) {
+      var usersList = jsonDecode(response)['items'] as List;
+      if (usersList.isNotEmpty) {
+        return usersList
+            .map((e) => SOFUser(
+                id: e["user_id"],
+                name: e["display_name"],
+                avatar: e["profile_image"],
+                location: e["location"],
+                reputation: e["reputation"],
+                isBookmarked: _isBookmarked(e["user_id"], bookmarks),
+                age: e["age"]))
+            .toList();
+      }
     }
     return [];
   }
 
-  bool _isBookmarked(int userId, List<SOFUserDto>? bookmarks) {
+  bool _isBookmarked(int userId, List<SOFUser>? bookmarks) {
     try {
-      SOFUserDto? user =
-          bookmarks?.firstWhere((element) => element.id == userId);
+      SOFUser? user = bookmarks?.firstWhere((element) => element.id == userId);
       if (user != null) {
         return true;
       }
