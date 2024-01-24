@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/models/failures.dart';
 import '../../bloc/bookmarks/bookmarks.dart';
-import '../users_list/widgets/error_widget.dart';
+import '../../shared/error_widget.dart';
 import 'widgets/bookmarks_list_widget.dart';
 
 class SOFBookmarksListPage extends StatelessWidget {

@@ -59,6 +59,11 @@ class SOFUsersNetworkDataSourceImpl implements SOFUsersNetworkDataSource {
     }
   }
 
+  ///
+  /// Fetch the reputations of a user in a page
+  ///  - Returns the response as string if success
+  ///  - Returns error status code if error
+  ///
   @override
   Future<SOFResponse> fetchReputation(
       {required int userId, required int page}) async {

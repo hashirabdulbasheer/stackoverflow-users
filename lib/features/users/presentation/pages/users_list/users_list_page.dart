@@ -7,7 +7,7 @@ import '../../../../../core/misc/logger.dart';
 import '../../../../../core/models/failures.dart';
 import '../../../domain/entities/user.dart';
 import '../../bloc/users/users.dart';
-import 'widgets/error_widget.dart';
+import '../../shared/error_widget.dart';
 import 'widgets/users_list_widget.dart';
 
 class SOFUsersListPage extends StatefulWidget {

@@ -7,7 +7,7 @@ import '../../../../../core/misc/logger.dart';
 import '../../../../../core/models/failures.dart';
 import '../../../domain/entities/reputation.dart';
 import '../../bloc/reputations/reputations.dart';
-import '../users_list/widgets/error_widget.dart';
+import '../../shared/error_widget.dart';
 import 'widgets/reputations_list_widget.dart';
 
 class SOFReputationsListPage extends StatefulWidget {

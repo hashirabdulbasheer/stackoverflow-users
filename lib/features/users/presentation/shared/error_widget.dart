@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/misc/design_system.dart';
-import '../../../../../../core/models/failures.dart';
+import '../../../../core/misc/design_system.dart';
+import '../../../../core/models/failures.dart';
 
 class SOFErrorWidget extends StatelessWidget {
   final GeneralFailure failure;
@@ -21,7 +22,7 @@ class SOFErrorWidget extends StatelessWidget {
           height: 20,
         ),
         Text(
-          "ERROR: ${failure.message}",
+          '${"error.prefix".tr()}: ${failure.message}',
           style: SOFDesignSystem.subHeadline,
         ),
         const SizedBox(
@@ -29,7 +30,7 @@ class SOFErrorWidget extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () => onRetry(),
-          child: const Text("Retry"),
+          child: Text("error.retry_button_title".tr()),
         )
       ],
     );

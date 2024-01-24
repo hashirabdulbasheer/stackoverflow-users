@@ -39,7 +39,7 @@ class SOFUsersRepositoryImpl extends SOFUsersRepository {
       /// if page is present in db then return that
       SOFPageDto? pageDto = localDataSource.get(page.toString());
       if (pageDto != null && pageDto.users.isNotEmpty && forceApi != true) {
-        // include cache policy checks later on
+        // include cache policy checks later on to check cache validity
         SOFLogger.d("DB: Page $page");
         return Right(_mapPageDtoToUsers(pageDto, bookmarkedUsers));
       }

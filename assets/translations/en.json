@@ -10,7 +10,9 @@
   "error": {
     "location_unavailable": "Location unavailable",
     "page_not_found": "Page not found",
-    "no_bookmark": "No bookmarks"
+    "no_bookmark": "No bookmarks",
+    "prefix": "ERROR",
+    "retry_button_title": "Retry"
   },
   "usersPage": {
     "bookmark_title": "Bookmarks"

@@ -139,7 +139,7 @@ class SOFUsersListPageBloc
     }
   }
 
-  // previous users will be replaced with new
+  // new users will have preference over previous for duplicates
   List<SOFUser> _combine(List<SOFUser> previousUsers, List<SOFUser> newUsers) {
     // Improve logic later on
     Map<int, SOFUser> shelf = {};
