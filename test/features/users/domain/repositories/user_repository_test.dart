@@ -9,7 +9,7 @@ import '../../../../utils/test_utils.dart';
 
 void main() {
   /// Users list fetching
-  group("Users list fetching", () {
+  group("Users list network fetching", () {
     test(
         'Repository should return success with empty user list for success network response for fetchUsers with empty json',
         () async {
@@ -91,6 +91,22 @@ void main() {
       expect(result.isLeft, false);
       expect(result.isRight, true);
       expect((result.right as List).length == 1, true);
+    });
+  });
+
+  group("Users list local fetching", () {
+    test(
+        'Repository should return success with local user from db if user exists in db',
+        () async {
+      http.Client client =
+          TestUtils.makeUsersClient(response: http.Response("{}", 201));
+      SOFUsersRepository repository = TestUtils.makeUserRepository(client);
+
+      Either result = await repository.fetchUsers(page: 1);
+
+      expect(result.isLeft, false);
+      expect(result.isRight, true);
+      expect(result.right, [TestUtils.user]);
     });
   });
 
