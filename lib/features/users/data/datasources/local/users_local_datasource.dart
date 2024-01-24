@@ -6,14 +6,14 @@ import '../datasource.dart';
 import 'dto/page_dto.dart';
 import 'dto/user_dto.dart';
 
-class SOFUsersLocalDataSourceImpl implements SOFUsersDataSource {
-  final SOFUsersLocalDataSource localDataSource;
+class SOFUsersLocalDataSourceImpl implements SOFUsersLocalDataSource {
+  final SOFDatabase database;
 
-  SOFUsersLocalDataSourceImpl({required this.localDataSource});
+  SOFUsersLocalDataSourceImpl({required this.database});
 
   @override
   Future<SOFResponse> fetchUsers({required int page}) {
-    SOFPageDto? pageDto = localDataSource.get(page.toString());
+    SOFPageDto? pageDto = database.get(page.toString());
     if (pageDto != null) {
       return Future.value(SOFResponse(
           isSuccessful: true, body: _mapPageDtoToUsersJsonString(pageDto)));
@@ -26,20 +26,13 @@ class SOFUsersLocalDataSourceImpl implements SOFUsersDataSource {
   Future<bool> saveUsersPage(
       {required int page, required String responseJson}) {
     if (responseJson.isNotEmpty) {
-      localDataSource.putUpdate(
+      database.putUpdate(
           page.toString(), _mapPageDtoResponse(page, responseJson));
 
       return Future.value(true);
     }
 
     return Future.value(false);
-  }
-
-  @override
-  Future<SOFResponse> fetchReputation(
-      {required int userId, required int page}) {
-    // Not saving reputations in local data source for now
-    throw UnimplementedError();
   }
 
 
